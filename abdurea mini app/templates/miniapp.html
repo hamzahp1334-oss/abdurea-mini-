@@ -1,0 +1,4340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>{{ branding.store_name }} — Telegram Mini App</title>
+  
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Mini App Stylesheet -->
+  <style>
+/* ==========================================================================
+   ABDUREA STORE — TELEGRAM MINI APP DESIGN SYSTEM
+   Modern, Mobile-First, Telegram-Native Responsive Stylesheet
+   ========================================================================== */
+
+:root {
+  /* Dynamic Telegram Theme Bindings with Fallbacks */
+  --bg-color: var(--tg-theme-bg-color, #0b0f19);
+  --secondary-bg-color: var(--tg-theme-secondary-bg-color, #131b2e);
+  --text-color: var(--tg-theme-text-color, #f8fafc);
+  --hint-color: var(--tg-theme-hint-color, #94a3b8);
+  --link-color: var(--tg-theme-link-color, #6366f1);
+  --button-color: var(--tg-theme-button-color, #6366f1);
+  --button-text-color: var(--tg-theme-button-text-color, #ffffff);
+
+  /* Curated Brand Tokens */
+  --brand-primary: #6366f1;
+  --brand-secondary: #8b5cf6;
+  --brand-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  
+  --surface-card: rgba(26, 34, 53, 0.7);
+  --surface-card-hover: rgba(33, 44, 69, 0.85);
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --surface-glass: rgba(19, 27, 46, 0.85);
+  
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.15);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.15);
+  --color-info: #0ea5e9;
+  --color-info-bg: rgba(14, 165, 233, 0.15);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.25);
+
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: 'Outfit', sans-serif;
+
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Base Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-main);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+/* Simulated Dev Banner */
+.preview-banner {
+  background: #f59e0b;
+  color: #000;
+  padding: 6px 12px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.preview-banner button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* App Viewport Container (Centered on desktop, full on mobile) */
+.app-viewport {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color);
+  position: relative;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.tma-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  object-fit: contain;
+  background: #1e293b;
+  box-shadow: var(--shadow-sm);
+  padding: 2px;
+}
+
+.brand-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.user-greeting {
+  font-size: 11px;
+  color: var(--hint-color);
+  display: block;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+.svg-icon {
+  width: 19px;
+  height: 19px;
+}
+.svg-icon-sm {
+  width: 16px;
+  height: 16px;
+}
+.svg-icon-xs {
+  width: 14px;
+  height: 14px;
+}
+
+.cart-icon-btn {
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  border-radius: var(--radius-full);
+  padding: 0 4px;
+  border: 2px solid var(--bg-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   MAIN CONTENT & TABS
+   ========================================================================== */
+.tma-content {
+  flex: 1;
+  padding-bottom: calc(75px + var(--safe-bottom));
+  overflow-y: auto;
+}
+
+.tab-pane {
+  display: none;
+  padding: 16px;
+  animation: fadeIn 0.25s ease-out;
+}
+.tab-pane.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   HERO SPOTLIGHT BANNER
+   ========================================================================== */
+.hero-card {
+  position: relative;
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: var(--shadow-glow);
+}
+
+.hero-glow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.45) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  color: #c7d2fe;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  margin-bottom: 8px;
+}
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.hero-desc {
+  font-size: 12px;
+  color: #cbd5e1;
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+
+.hero-cta-btn {
+  background: #ffffff;
+  color: #312e81;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 9px 16px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+}
+.hero-cta-btn:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================================================
+   CATEGORIES HORIZONTAL SCROLL
+   ========================================================================== */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  margin-top: 10px;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.section-link {
+  background: none;
+  border: none;
+  color: var(--link-color);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.section-badge {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.categories-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 18px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.categories-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.category-chip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.category-chip.active {
+  background: var(--brand-gradient);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: var(--shadow-glow);
+}
+.category-chip:active {
+  transform: scale(0.94);
+}
+
+.category-chip-count {
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   PRODUCT GRID & PRODUCT CARDS
+   ========================================================================== */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.product-card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.product-card:active {
+  transform: scale(0.97);
+}
+
+.card-img-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  background: #182238;
+  overflow: hidden;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.product-card:hover .card-img {
+  transform: scale(1.04);
+}
+
+.card-tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(11, 15, 25, 0.75);
+  backdrop-filter: blur(6px);
+  color: #94a3b8;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.card-body {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-color);
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-plans-sub {
+  font-size: 11px;
+  color: var(--hint-color);
+  margin-bottom: 8px;
+}
+
+.card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-price-box {
+  display: flex;
+  flex-direction: column;
+}
+.price-label {
+  font-size: 9px;
+  color: var(--hint-color);
+  text-transform: uppercase;
+}
+.price-value {
+  font-size: 14px;
+  font-weight: 800;
+  color: #a5b4fc;
+}
+
+.card-quick-add {
+  background: var(--brand-primary);
+  color: #fff;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.card-quick-add:active {
+  transform: scale(0.85);
+}
+
+/* ==========================================================================
+   TRUST BADGES
+   ========================================================================== */
+.trust-banner {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  margin: 16px 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.trust-icon {
+  font-size: 18px;
+  width: 34px;
+  height: 34px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.trust-info h4 {
+  font-size: 12px;
+  font-weight: 700;
+}
+.trust-info p {
+  font-size: 10px;
+  color: var(--hint-color);
+}
+
+/* ==========================================================================
+   SEARCH BAR
+   ========================================================================== */
+.search-bar-wrapper {
+  margin-bottom: 12px;
+}
+
+.search-input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-full);
+  padding: 0 14px;
+  transition: border-color 0.2s ease;
+}
+.search-input-box:focus-within {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.search-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--hint-color);
+  margin-right: 8px;
+}
+
+.search-input-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 11px 0;
+  font-size: 13px;
+}
+
+.search-clear {
+  background: none;
+  border: none;
+  color: var(--hint-color);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.catalog-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 11px;
+  color: var(--hint-color);
+}
+
+.sync-refresh-btn {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--hint-color);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.sync-refresh-btn:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================================================
+   BOTTOM NAVIGATION BAR
+   ========================================================================== */
+.tma-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: calc(62px + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--surface-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 50;
+}
+
+.nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  color: var(--hint-color);
+  cursor: pointer;
+  padding: 6px 0;
+  transition: all 0.2s ease;
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.nav-tab.active {
+  color: #818cf8;
+}
+.nav-tab.active .nav-icon {
+  transform: translateY(-2px);
+  color: #818cf8;
+}
+
+.relative-nav-icon {
+  position: relative;
+}
+
+.nav-badge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  min-width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  border-radius: var(--radius-full);
+  padding: 0 3px;
+}
+
+/* ==========================================================================
+   MODALS & BOTTOM SHEETS
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-sheet {
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  background: var(--secondary-bg-color);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  border: 1px solid var(--surface-border);
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  margin: 10px auto 4px;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--surface-border);
+}
+.sheet-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.modal-close-btn {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--hint-color);
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  z-index: 10;
+}
+
+.modal-scroll-body {
+  overflow-y: auto;
+  padding: 16px 18px 24px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ==========================================================================
+   PRODUCT DETAIL SHEET CONTENT
+   ========================================================================== */
+.modal-product-img-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #182238;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.modal-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-product-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  line-height: 1.25;
+}
+
+.modal-product-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.stock-tag {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.modal-product-desc {
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.plan-selection-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--hint-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.plans-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.plan-option-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--surface-card);
+  border: 1.5px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.plan-option-card.selected {
+  border-color: var(--brand-primary);
+  background: rgba(99, 102, 241, 0.12);
+}
+
+.plan-card-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.plan-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--hint-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.plan-option-card.selected .plan-radio {
+  border-color: var(--brand-primary);
+}
+.plan-option-card.selected .plan-radio::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  background: var(--brand-primary);
+  border-radius: 50%;
+}
+
+.plan-duration-name {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.plan-card-price {
+  font-weight: 800;
+  font-size: 15px;
+  color: #a5b4fc;
+}
+
+.qty-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding: 10px 14px;
+  background: var(--surface-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--surface-border);
+}
+
+.qty-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.qty-btn {
+  background: #1e293b;
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.qty-btn:active {
+  transform: scale(0.9);
+}
+
+.qty-val {
+  font-weight: 800;
+  font-size: 15px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.modal-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ==========================================================================
+   BUTTONS & FORMS
+   ========================================================================== */
+.btn-primary {
+  background: var(--brand-gradient);
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 13px 18px;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+.btn-primary:active {
+  transform: scale(0.97);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 13px 18px;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #cbd5e1;
+}
+
+.form-input {
+  width: 100%;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text-color);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.form-input:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.form-textarea {
+  resize: vertical;
+}
+
+.form-hint {
+  font-size: 10px;
+  color: var(--hint-color);
+  margin-top: 4px;
+  display: block;
+}
+
+/* ==========================================================================
+   CART & CHECKOUT
+   ========================================================================== */
+.pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.pane-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 800;
+}
+.pane-action-link {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cart-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.cart-item-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+}
+
+.cart-item-img {
+  width: 58px;
+  height: 58px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  background: #1e293b;
+  flex-shrink: 0;
+}
+
+.cart-item-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-title {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-item-plan {
+  font-size: 11px;
+  color: var(--hint-color);
+  margin-bottom: 4px;
+}
+
+.cart-item-price {
+  font-weight: 800;
+  color: #a5b4fc;
+  font-size: 14px;
+}
+
+.cart-item-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.cart-qty-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #111827;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+}
+.cart-qty-pill button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-weight: bold;
+  cursor: pointer;
+}
+.cart-qty-pill span {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.cart-del-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.cart-summary-card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+.summary-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.summary-line.total-line {
+  font-size: 16px;
+  font-weight: 800;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+.total-amount {
+  color: #a5b4fc;
+}
+
+.summary-divider {
+  height: 1px;
+  background: var(--surface-border);
+  margin: 10px 0;
+}
+
+/* Stepper in Checkout */
+.checkout-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px 16px;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.step-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #1e293b;
+  color: var(--hint-color);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.step-dot.active {
+  background: var(--brand-primary);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+}
+
+.step-line {
+  flex: 1;
+  max-width: 50px;
+  height: 2px;
+  background: var(--surface-border);
+  margin: 0 4px;
+}
+
+.checkout-step {
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+.checkout-step.active {
+  display: block;
+}
+
+.step-instruction {
+  font-size: 12px;
+  color: var(--hint-color);
+  margin-bottom: 14px;
+}
+
+.review-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.review-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+}
+
+.payment-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.pay-tab {
+  padding: 10px;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.pay-tab.active {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: var(--brand-primary);
+  color: #fff;
+}
+
+.payment-box {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.pay-detail-row {
+  margin-bottom: 10px;
+}
+.pay-detail-row:last-child {
+  margin-bottom: 0;
+}
+.pay-label {
+  display: block;
+  font-size: 10px;
+  color: var(--hint-color);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.pay-val {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pay-copy-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0f172a;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  margin-top: 2px;
+}
+.pay-code {
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #38bdf8;
+}
+
+.copy-btn {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+.copy-btn:active {
+  transform: scale(0.9);
+}
+
+.step-guide-callout {
+  background: rgba(99, 102, 241, 0.08);
+  border-left: 3px solid var(--brand-primary);
+  padding: 10px 14px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-size: 12px;
+}
+.step-guide-callout ol {
+  padding-left: 18px;
+  line-height: 1.6;
+}
+
+/* Receipt Dropzone */
+.receipt-dropzone {
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+}
+.receipt-dropzone:hover {
+  border-color: var(--brand-primary);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.dropzone-icon {
+  font-size: 32px;
+  margin-bottom: 6px;
+}
+.dropzone-text {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.dropzone-sub {
+  font-size: 11px;
+  color: var(--hint-color);
+}
+
+.dropzone-preview {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+.dropzone-preview img {
+  max-height: 160px;
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  object-fit: contain;
+}
+.dropzone-remove-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Success Step */
+.success-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  margin: 10px auto 16px;
+}
+
+.success-checkmark {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 3;
+  stroke: #10b981;
+  stroke-miterlimit: 10;
+  animation: fillSuccess 0.4s ease-in-out 0.4s forwards, scaleSuccess 0.3s ease-in-out 0.9s both;
+}
+.checkmark-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 3;
+  stroke-miterlimit: 10;
+  stroke: #10b981;
+  fill: rgba(16, 185, 129, 0.15);
+  animation: strokeCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+.checkmark-check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: strokeCheck 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+@keyframes strokeCircle {
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes strokeCheck {
+  100% { stroke-dashoffset: 0; }
+}
+
+.success-title {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.success-order-id {
+  text-align: center;
+  font-family: monospace;
+  font-size: 14px;
+  color: #38bdf8;
+  margin-bottom: 10px;
+}
+
+.success-desc {
+  text-align: center;
+  font-size: 12px;
+  color: #cbd5e1;
+  line-height: 1.5;
+  margin: 14px 0;
+}
+
+/* Status Chips */
+.status-chip {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+.status-review {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+.status-approved {
+  background: var(--color-info-bg);
+  color: var(--color-info);
+}
+.status-completed {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+.status-rejected {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+/* ==========================================================================
+   ORDERS LIST
+   ========================================================================== */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.order-card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.order-card:active {
+  transform: scale(0.98);
+}
+
+.order-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.order-num {
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.order-card-body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.order-img {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  background: #1e293b;
+}
+.order-info {
+  flex: 1;
+}
+.order-prod-name {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.order-prod-plan {
+  font-size: 11px;
+  color: var(--hint-color);
+}
+.order-card-right {
+  text-align: right;
+}
+.order-amount {
+  font-weight: 800;
+  font-size: 14px;
+  color: #a5b4fc;
+}
+.order-date {
+  font-size: 10px;
+  color: var(--hint-color);
+}
+
+/* ==========================================================================
+   PROFILE & STATS
+   ========================================================================== */
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-xl);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.profile-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-name {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+}
+.profile-username {
+  font-size: 12px;
+  color: var(--hint-color);
+  display: block;
+}
+.profile-id {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: monospace;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.stat-box {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 12px 8px;
+  text-align: center;
+}
+.stat-number {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  color: #a5b4fc;
+}
+.stat-label {
+  font-size: 10px;
+  color: var(--hint-color);
+}
+
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.menu-item:active {
+  transform: scale(0.98);
+}
+.menu-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.menu-icon {
+  font-size: 18px;
+}
+.menu-label {
+  font-weight: 700;
+  font-size: 13px;
+}
+.menu-sub {
+  font-size: 11px;
+  color: var(--hint-color);
+}
+
+.app-version-footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--hint-color);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 0;
+}
+
+/* ==========================================================================
+   EMPTY STATES & SKELETONS
+   ========================================================================== */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+.empty-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+.empty-title {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.empty-desc {
+  font-size: 12px;
+  color: var(--hint-color);
+  margin-bottom: 16px;
+}
+
+.skeleton-card {
+  height: 210px;
+  background: linear-gradient(90deg, #182238 25%, #222f4d 50%, #182238 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-lg);
+}
+
+.skeleton-chip {
+  width: 80px;
+  height: 32px;
+  background: linear-gradient(90deg, #182238 25%, #222f4d 50%, #182238 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-full);
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATIONS
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  background: rgba(19, 27, 46, 0.95);
+  border: 1px solid var(--surface-border);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: slideDownToast 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.toast.toast-success {
+  border-left: 3px solid var(--color-success);
+}
+.toast.toast-error {
+  border-left: 3px solid var(--color-danger);
+}
+.toast.toast-info {
+  border-left: 3px solid var(--color-info);
+}
+
+@keyframes slideDownToast {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Utilities */
+.hidden { display: none !important; }
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+.mt-4 { margin-top: 16px; }
+.text-brand { color: #a5b4fc; }
+.text-success { color: var(--color-success); }
+.text-danger { color: var(--color-danger); }
+.text-muted { color: var(--hint-color); }
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
+.btn-group-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btn-group-col { display: flex; flex-direction: column; gap: 8px; }
+
+</style>
+  <link rel="stylesheet" href="/static/miniapp/css/miniapp.css">
+  <link rel="stylesheet" href="/miniapp.css">
+  <link rel="icon" href="{{ branding.logo_url }}" type="image/png">
+</head>
+<body class="tma-app">
+  <!-- Dev/Preview Banner (visible only outside Telegram or in simulated mode) -->
+  <div id="preview-mode-banner" class="preview-banner hidden">
+    <span>⚡ <b>Preview Mode:</b> Telegram WebApp context simulated for browser testing</span>
+    <button onclick="document.getElementById('preview-mode-banner').classList.add('hidden')" aria-label="Dismiss">&times;</button>
+  </div>
+
+  <!-- Main Application Container -->
+  <div id="app" class="app-viewport">
+    
+    <!-- TOP NAVIGATION BAR -->
+    <header class="tma-header">
+      <div class="header-brand">
+        <img src="{{ branding.logo_url }}" alt="{{ branding.store_name }}" class="brand-logo" onerror="this.src='https://placehold.co/80x80/6366f1/ffffff?text=AS'">
+        <div class="brand-text">
+          <h1 class="brand-title">{{ branding.store_name }}</h1>
+          <span class="user-greeting" id="user-greeting">Welcome 👋</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-header-search" class="icon-btn" aria-label="Search" onclick="TMA.nav.switchTab('catalog'); document.getElementById('search-input')?.focus();">
+          <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+        <button id="btn-header-cart" class="icon-btn cart-icon-btn" aria-label="Shopping Cart" onclick="TMA.cart.openDrawer()">
+          <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span id="cart-badge-count" class="cart-badge hidden">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN SCROLLABLE CONTENT VIEW -->
+    <main class="tma-content">
+      
+      <!-- ================= TAB: HOME ================= -->
+      <section id="tab-home" class="tab-pane active">
+        <!-- Dynamic Hero Spotlight Banner -->
+        <div class="hero-card" id="hero-banner">
+          <div class="hero-content">
+            <span class="hero-tag">✨ OFFICIAL STORE</span>
+            <h2 class="hero-title" id="hero-title">Premium Subscriptions & Pro Accounts</h2>
+            <p class="hero-desc" id="hero-desc">Instant access to Gemini Pro, Netflix, Spotify, ChatGPT & more with Telebirr & CBE Birr.</p>
+            <button class="hero-cta-btn" onclick="TMA.nav.switchTab('catalog')">
+              <span>Browse Catalog</span>
+              <svg class="svg-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="hero-glow"></div>
+        </div>
+
+        <!-- Admin Store Control Toolbar (Visible to Channel Admin Only) -->
+        <div id="home-admin-bar" class="admin-top-toolbar hidden" style="margin-bottom: 14px;">
+          <button class="btn-primary" style="width: 100%; justify-content: center; padding: 11px;" onclick="TMA.admin.openProductEditor(null)">
+            <span>➕</span>
+            <span>Add New Product to Store</span>
+          </button>
+        </div>
+
+        <!-- Horizontal Categories Bar -->
+        <div class="section-header">
+          <h3 class="section-title">Categories</h3>
+          <button class="section-link" onclick="TMA.nav.switchTab('catalog')">View All</button>
+        </div>
+        <div class="categories-scroll" id="home-categories-list">
+          <div class="category-chip skeleton-chip"></div>
+          <div class="category-chip skeleton-chip"></div>
+          <div class="category-chip skeleton-chip"></div>
+          <div class="category-chip skeleton-chip"></div>
+        </div>
+
+        <!-- Featured Products Section -->
+        <div class="section-header">
+          <h3 class="section-title">🔥 Featured Digital Services</h3>
+          <span class="section-badge" id="featured-count-badge">Live</span>
+        </div>
+        <div class="product-grid" id="featured-products-grid">
+          <!-- Skeletons while loading -->
+          <div class="product-card skeleton-card"></div>
+          <div class="product-card skeleton-card"></div>
+          <div class="product-card skeleton-card"></div>
+          <div class="product-card skeleton-card"></div>
+        </div>
+
+        <!-- Why Choose Us Trust Badges -->
+        <div class="trust-banner">
+          <div class="trust-item">
+            <div class="trust-icon">⚡</div>
+            <div class="trust-info">
+              <h4>Instant Delivery</h4>
+              <p>Delivered via Telegram bot</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">🛡️</div>
+            <div class="trust-info">
+              <h4>100% Genuine</h4>
+              <p>Full warranty & support</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">💳</div>
+            <div class="trust-info">
+              <h4>Telebirr & CBE Birr</h4>
+              <p>Zero payment friction</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- All Products Preview -->
+        <div class="section-header">
+          <h3 class="section-title">📦 All Products & Subscriptions</h3>
+          <span class="section-subtitle" id="home-total-count">...</span>
+        </div>
+        <div class="product-grid" id="home-all-products-grid"></div>
+      </section>
+
+      <!-- ================= TAB: CATALOG ================= -->
+      <section id="tab-catalog" class="tab-pane">
+        <!-- Search Bar with Instant Clear -->
+        <div class="search-bar-wrapper">
+          <div class="search-input-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="search-input" placeholder="Search services, Netflix, Gemini, ChatGPT..." autocomplete="off">
+            <button id="search-clear-btn" class="search-clear hidden" onclick="TMA.catalog.clearSearch()" aria-label="Clear search">&times;</button>
+          </div>
+        </div>
+
+        <!-- Filter Category Pills -->
+        <div class="categories-scroll filter-categories" id="catalog-categories-list">
+          <button class="category-chip active" data-cat="all">All</button>
+        </div>
+
+        <!-- Admin Catalog Action Bar (Visible to Channel Admin Only) -->
+        <div id="catalog-admin-bar" class="admin-top-toolbar hidden" style="margin-bottom: 14px;">
+          <button class="btn-primary" style="width: 100%; justify-content: center; padding: 11px;" onclick="TMA.admin.openProductEditor(null)">
+            <span>➕</span>
+            <span>Add New Product to Store</span>
+          </button>
+        </div>
+
+        <!-- Live Results Count -->
+        <div class="catalog-status-bar">
+          <span id="catalog-results-count" class="results-text">Loading catalog...</span>
+          <button class="sync-refresh-btn" onclick="TMA.catalog.reload(true)" title="Check for updates">
+            <svg class="svg-icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>Sync</span>
+          </button>
+        </div>
+
+        <!-- Catalog Product Grid -->
+        <div class="product-grid" id="catalog-products-grid">
+          <!-- Skeletons -->
+          <div class="product-card skeleton-card"></div>
+          <div class="product-card skeleton-card"></div>
+          <div class="product-card skeleton-card"></div>
+          <div class="product-card skeleton-card"></div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="catalog-empty-state" class="empty-state hidden">
+          <div class="empty-icon">🔍</div>
+          <h4 class="empty-title">No products found</h4>
+          <p class="empty-desc">Try searching for a different keyword or select another category.</p>
+          <button class="btn-secondary" onclick="TMA.catalog.clearFilters()">Clear Filters</button>
+        </div>
+      </section>
+
+      <!-- ================= TAB: CART ================= -->
+      <section id="tab-cart" class="tab-pane">
+        <div class="pane-header">
+          <h2 class="pane-title">Shopping Cart</h2>
+          <button id="btn-clear-cart" class="pane-action-link" onclick="TMA.cart.clear()">Clear All</button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cart-items-container" class="cart-items-list">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Empty Cart State -->
+        <div id="cart-empty-state" class="empty-state hidden">
+          <div class="empty-icon">🛒</div>
+          <h4 class="empty-title">Your cart is empty</h4>
+          <p class="empty-desc">Explore our digital services and add plans to your cart.</p>
+          <button class="btn-primary" onclick="TMA.nav.switchTab('catalog')">Start Shopping</button>
+        </div>
+
+        <!-- Cart Summary & Checkout Trigger -->
+        <div id="cart-summary-card" class="cart-summary-card hidden">
+          <div class="summary-line">
+            <span>Subtotal</span>
+            <span id="cart-subtotal-val">0 ETB</span>
+          </div>
+          <div class="summary-line">
+            <span>Digital Delivery</span>
+            <span class="text-success font-medium">Free (Instant Telegram)</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-line total-line">
+            <span>Total</span>
+            <span id="cart-total-val" class="total-amount">0 ETB</span>
+          </div>
+
+          <button id="btn-start-checkout" class="btn-primary btn-checkout" onclick="TMA.checkout.open()">
+            <span>Proceed to Checkout</span>
+            <svg class="svg-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= TAB: ORDERS ================= -->
+      <section id="tab-orders" class="tab-pane">
+        <div class="pane-header">
+          <h2 class="pane-title">My Orders</h2>
+          <button class="sync-refresh-btn" onclick="TMA.orders.loadUserOrders(true)">
+            <svg class="svg-icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>Refresh</span>
+          </button>
+        </div>
+
+        <!-- Orders List -->
+        <div id="orders-list-container" class="orders-list">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Empty Orders State -->
+        <div id="orders-empty-state" class="empty-state hidden">
+          <div class="empty-icon">📦</div>
+          <h4 class="empty-title">No orders yet</h4>
+          <p class="empty-desc">Your purchased subscriptions and account deliveries will appear here.</p>
+          <button class="btn-primary" onclick="TMA.nav.switchTab('catalog')">Explore Services</button>
+        </div>
+      </section>
+
+      <!-- ================= TAB: PROFILE ================= -->
+      <section id="tab-profile" class="tab-pane">
+        <!-- Customer Profile Card -->
+        <div id="profile-admin-container"></div>
+        <div class="profile-card">
+          <div class="profile-avatar" id="profile-avatar">U</div>
+          <div class="profile-info">
+            <h3 class="profile-name" id="profile-name">Telegram Customer</h3>
+            <span class="profile-username" id="profile-username">@username</span>
+            <span class="profile-id" id="profile-id">ID: ...</span>
+          </div>
+        </div>
+
+        <!-- Customer Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-box">
+            <span class="stat-number" id="stat-total-orders">0</span>
+            <span class="stat-label">Total Orders</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number" id="stat-completed-orders">0</span>
+            <span class="stat-label">Delivered</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number" id="stat-total-spend">0 ETB</span>
+            <span class="stat-label">Total Spent</span>
+          </div>
+        </div>
+
+        <!-- Store & Help Information -->
+        <div class="menu-list">
+          <a class="menu-item" href="https://t.me/{{ branding.support_username.replace('@', '') }}" target="_blank">
+            <div class="menu-item-left">
+              <span class="menu-icon">💬</span>
+              <div>
+                <div class="menu-label">Customer Support</div>
+                <div class="menu-sub">{{ branding.support_username }}</div>
+              </div>
+            </div>
+            <svg class="svg-icon-xs text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+
+          <a class="menu-item" href="https://t.me/abdurea1" target="_blank">
+            <div class="menu-item-left">
+              <span class="menu-icon">📢</span>
+              <div>
+                <div class="menu-label">Official Channel</div>
+                <div class="menu-sub">@abdurea1</div>
+              </div>
+            </div>
+            <svg class="svg-icon-xs text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+
+          <div class="menu-item" onclick="TMA.info.showPaymentAccounts()">
+            <div class="menu-item-left">
+              <span class="menu-icon">💳</span>
+              <div>
+                <div class="menu-label">Payment Accounts</div>
+                <div class="menu-sub">Telebirr & CBE Birr</div>
+              </div>
+            </div>
+            <svg class="svg-icon-xs text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          </div>
+
+          <div class="menu-item" onclick="TMA.info.showAbout()">
+            <div class="menu-item-left">
+              <span class="menu-icon">ℹ️</span>
+              <div>
+                <div class="menu-label">About ABDUREA STORE</div>
+                <div class="menu-sub">Guarantees & FAQs</div>
+              </div>
+            </div>
+            <svg class="svg-icon-xs text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          </div>
+        </div>
+
+        <div class="app-version-footer">
+          <span>ABDUREA STORE · Official Telegram Mini App</span>
+          <span class="text-muted">Direct Database Sync · Version 2.0</span>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav class="tma-bottom-nav">
+      <button class="nav-tab active" data-tab="home" onclick="TMA.nav.switchTab('home')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="nav-label">Home</span>
+      </button>
+
+      <button class="nav-tab" data-tab="catalog" onclick="TMA.nav.switchTab('catalog')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+        <span class="nav-label">Catalog</span>
+      </button>
+
+      <button class="nav-tab" data-tab="cart" onclick="TMA.nav.switchTab('cart')">
+        <div class="relative-nav-icon">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span id="nav-cart-badge" class="nav-badge hidden">0</span>
+        </div>
+        <span class="nav-label">Cart</span>
+      </button>
+
+      <button class="nav-tab" data-tab="orders" onclick="TMA.nav.switchTab('orders')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="nav-label">Orders</span>
+      </button>
+
+      <button class="nav-tab" data-tab="profile" onclick="TMA.nav.switchTab('profile')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- PRODUCT DETAIL MODAL / BOTTOM SHEET                       -->
+  <!-- ========================================================= -->
+  <div id="product-detail-modal" class="modal-overlay hidden" onclick="TMA.productModal.handleBackdrop(event)">
+    <div class="modal-sheet product-detail-sheet">
+      <div class="sheet-handle"></div>
+      <button class="modal-close-btn" onclick="TMA.productModal.close()" aria-label="Close">&times;</button>
+      
+      <div class="modal-scroll-body" id="product-modal-content">
+        <!-- Rendered dynamically by TMA.productModal.render(prod) -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MULTI-STEP CHECKOUT MODAL                                 -->
+  <!-- ========================================================= -->
+  <div id="checkout-modal" class="modal-overlay hidden">
+    <div class="modal-sheet checkout-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3 class="sheet-title" id="checkout-step-title">Step 1: Contact Information</h3>
+        <button class="modal-close-btn" onclick="TMA.checkout.close()">&times;</button>
+      </div>
+
+      <!-- Step Progress Bar -->
+      <div class="checkout-stepper">
+        <div class="step-dot active" id="step-dot-1">1</div>
+        <div class="step-line" id="step-line-1"></div>
+        <div class="step-dot" id="step-dot-2">2</div>
+        <div class="step-line" id="step-line-2"></div>
+        <div class="step-dot" id="step-dot-3">3</div>
+        <div class="step-line" id="step-line-3"></div>
+        <div class="step-dot" id="step-dot-4">4</div>
+      </div>
+
+      <div class="modal-scroll-body checkout-body">
+        
+        <!-- STEP 1: CUSTOMER INFO -->
+        <div id="checkout-step-1" class="checkout-step active">
+          <p class="step-instruction">Enter your contact details so we can deliver your subscription credentials.</p>
+          
+          <div class="form-group">
+            <label class="form-label" for="checkout-name">Full Name</label>
+            <input type="text" id="checkout-name" class="form-input" placeholder="Your Full Name">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="checkout-phone">Phone Number <span class="text-danger">*</span></label>
+            <input type="tel" id="checkout-phone" class="form-input" placeholder="e.g. 0912345678 or +251...">
+            <span class="form-hint">Used for payment verification & instant SMS confirmation</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="checkout-notes">Account Delivery Details / Note</label>
+            <textarea id="checkout-notes" class="form-input form-textarea" rows="2" placeholder="Your email (for invite) or specific account preferences..."></textarea>
+          </div>
+
+          <button class="btn-primary btn-full mt-4" onclick="TMA.checkout.nextStep(2)">Continue to Order Review &rarr;</button>
+        </div>
+
+        <!-- STEP 2: ORDER REVIEW -->
+        <div id="checkout-step-2" class="checkout-step">
+          <p class="step-instruction">Review your items before proceeding to payment.</p>
+          <div id="checkout-review-items" class="review-items-list"></div>
+
+          <div class="summary-line mt-4">
+            <span>Total Payable Amount</span>
+            <span id="checkout-review-total" class="total-amount">0 ETB</span>
+          </div>
+
+          <div class="btn-group-row mt-4">
+            <button class="btn-secondary" onclick="TMA.checkout.prevStep(1)">&larr; Back</button>
+            <button class="btn-primary" onclick="TMA.checkout.submitOrder()">Confirm & Choose Payment &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: PAYMENT METHOD -->
+        <div id="checkout-step-3" class="checkout-step">
+          <div class="order-created-pill">
+            <span>Order Number: <strong id="checkout-order-num-badge">#ABD-...</strong></span>
+          </div>
+
+          <p class="step-instruction">Select your payment method and transfer the exact total:</p>
+          
+          <div class="payment-tabs">
+            <button class="pay-tab active" id="tab-pay-telebirr" onclick="TMA.checkout.selectPaymentTab('telebirr')">
+              <span>📱 Telebirr</span>
+            </button>
+            <button class="pay-tab" id="tab-pay-cbe" onclick="TMA.checkout.selectPaymentTab('cbe_birr')">
+              <span>🏦 CBE Birr</span>
+            </button>
+          </div>
+
+          <!-- Telebirr Box -->
+          <div id="box-pay-telebirr" class="payment-box">
+            <div class="pay-detail-row">
+              <span class="pay-label">Telebirr Account Number:</span>
+              <div class="pay-copy-box">
+                <span class="pay-code" id="pay-telebirr-acc">{{ branding.telebirr_account }}</span>
+                <button class="copy-btn" onclick="TMA.utils.copyText('{{ branding.telebirr_account }}')">Copy</button>
+              </div>
+            </div>
+            <div class="pay-detail-row">
+              <span class="pay-label">Account Holder Name:</span>
+              <span class="pay-val">{{ branding.telebirr_name }}</span>
+            </div>
+            <div class="pay-detail-row">
+              <span class="pay-label">Amount:</span>
+              <span class="pay-val text-brand font-bold" id="pay-telebirr-amount">0 ETB</span>
+            </div>
+          </div>
+
+          <!-- CBE Birr Box -->
+          <div id="box-pay-cbe" class="payment-box hidden">
+            <div class="pay-detail-row">
+              <span class="pay-label">CBE Account Number:</span>
+              <div class="pay-copy-box">
+                <span class="pay-code" id="pay-cbe-acc">{{ branding.cbe_birr_account }}</span>
+                <button class="copy-btn" onclick="TMA.utils.copyText('{{ branding.cbe_birr_account }}')">Copy</button>
+              </div>
+            </div>
+            <div class="pay-detail-row">
+              <span class="pay-label">Account Holder Name:</span>
+              <span class="pay-val">{{ branding.cbe_birr_name }}</span>
+            </div>
+            <div class="pay-detail-row">
+              <span class="pay-label">Amount:</span>
+              <span class="pay-val text-brand font-bold" id="pay-cbe-amount">0 ETB</span>
+            </div>
+          </div>
+
+          <div class="step-guide-callout">
+            <ol>
+              <li>Open your <strong>Telebirr</strong> or <strong>CBE Birr</strong> app.</li>
+              <li>Transfer the exact amount shown above to the account.</li>
+              <li>Take a <strong>screenshot</strong> of the transaction confirmation.</li>
+              <li>Click Continue below to upload your receipt.</li>
+            </ol>
+          </div>
+
+          <button class="btn-primary btn-full mt-4" onclick="TMA.checkout.nextStep(4)">I Have Made Payment &rarr; Upload Receipt</button>
+        </div>
+
+        <!-- STEP 4: RECEIPT UPLOAD -->
+        <div id="checkout-step-4" class="checkout-step">
+          <p class="step-instruction">Upload your transfer screenshot to verify your payment immediately.</p>
+
+          <div class="receipt-dropzone" id="receipt-dropzone" onclick="document.getElementById('receipt-file-input').click()">
+            <input type="file" id="receipt-file-input" accept="image/*,application/pdf" class="hidden" onchange="TMA.checkout.handleReceiptSelect(event)">
+            <div id="dropzone-prompt">
+              <div class="dropzone-icon">📸</div>
+              <p class="dropzone-text">Tap to select or take receipt photo</p>
+              <span class="dropzone-sub">Supports JPG, PNG, WEBP, PDF</span>
+            </div>
+            <div id="dropzone-preview" class="dropzone-preview hidden">
+              <img id="receipt-preview-img" src="" alt="Receipt Preview">
+              <button class="dropzone-remove-btn" onclick="TMA.checkout.clearReceiptPreview(event)">&times;</button>
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <label class="form-label" for="receipt-sender-name">Payment Sender Name</label>
+            <input type="text" id="receipt-sender-name" class="form-input" placeholder="Name on the bank / Telebirr account">
+          </div>
+
+          <button id="btn-submit-receipt" class="btn-primary btn-full mt-4" onclick="TMA.checkout.uploadReceipt()">
+            <span>Submit Verification & Complete Order</span>
+          </button>
+        </div>
+
+        <!-- STEP 5: SUCCESS CONFIRMATION -->
+        <div id="checkout-step-5" class="checkout-step">
+          <div class="success-icon-wrapper">
+            <svg class="success-checkmark" viewBox="0 0 52 52">
+              <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+              <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+          </div>
+
+          <h3 class="success-title">Order Placed Successfully!</h3>
+          <p class="success-order-id" id="success-order-id">Order #ABD-...</p>
+          <div class="status-chip status-review">🟡 Payment Under Verification</div>
+
+          <p class="success-desc">
+            Your receipt has been submitted to the ABDUREA STORE administration.
+            Our team will verify your transfer and deliver your digital credentials directly to your Telegram chat.
+          </p>
+
+          <div class="btn-group-col mt-4">
+            <button class="btn-primary btn-full" onclick="TMA.checkout.finishAndShowOrders()">View in My Orders</button>
+            <button class="btn-secondary btn-full" onclick="TMA.checkout.finishAndContinueShopping()">Continue Shopping</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- ORDER DETAIL DRAWER                                       -->
+  <!-- ========================================================= -->
+  <div id="order-detail-modal" class="modal-overlay hidden" onclick="TMA.orders.handleBackdrop(event)">
+    <div class="modal-sheet order-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3 class="sheet-title" id="order-drawer-title">Order Details</h3>
+        <button class="modal-close-btn" onclick="TMA.orders.closeDrawer()">&times;</button>
+      </div>
+      <div class="modal-scroll-body" id="order-drawer-content">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="tma-toast-container" class="toast-container"></div>
+
+  <!-- Mini App JavaScript Logic -->
+  <script>
+/**
+ * ABDUREA STORE — Telegram Mini App Client Engine
+ * High-performance, offline-tolerant, reactive SPA with Telegram WebApp SDK integration.
+ */
+
+(function () {
+  'use strict';
+
+  // -------------------------------------------------------------
+  // 1. STATE & TELEGRAM INITIALIZATION
+  // -------------------------------------------------------------
+  const tg = window.Telegram?.WebApp || null;
+
+  const state = {
+    config: {},
+    categories: [],
+    products: [],
+    filteredProducts: [],
+    selectedCategory: 'all',
+    searchQuery: '',
+    cart: [],
+    user: null,
+    activeTab: 'home',
+    selectedProduct: null,
+    selectedPlan: null,
+    selectedQty: 1,
+    checkout: {
+      step: 1,
+      items: [],
+      total: 0,
+      paymentMethod: 'telebirr',
+      order: null,
+      receiptFile: null,
+      isSubmitting: false
+    },
+    orders: [],
+    profile: null,
+    isInitialLoaded: false
+  };
+
+  // -------------------------------------------------------------
+  // 2. HTTP & TELEGRAM API HELPER
+  // -------------------------------------------------------------
+  async function apiFetch(url, options = {}) {
+    const headers = options.headers || {};
+    if (tg && tg.initData) {
+      headers['X-Telegram-Init-Data'] = tg.initData;
+    } else {
+      headers['X-Dev-Preview'] = 'true';
+    }
+
+    if (!headers['Content-Type'] && !(options.body instanceof FormData)) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    options.headers = headers;
+    try {
+      const resp = await fetch(url, options);
+      if (!resp.ok) {
+        const errJson = await resp.json().catch(() => ({}));
+        throw new Error(errJson.message || errJson.error || `HTTP error ${resp.status}`);
+      }
+      return await resp.json();
+    } catch (err) {
+      console.warn(`API call failed for ${url}:`, err);
+      throw err;
+    }
+  }
+
+  // -------------------------------------------------------------
+  // 3. UTILITIES & TELEGRAM HAPTICS
+  // -------------------------------------------------------------
+  const utils = {
+    haptic(type = 'light') {
+      try {
+        if (tg?.HapticFeedback) {
+          if (type === 'success' || type === 'error' || type === 'warning') {
+            tg.HapticFeedback.notificationOccurred(type);
+          } else {
+            tg.HapticFeedback.impactOccurred(type);
+          }
+        }
+      } catch (e) {}
+    },
+
+    formatCurrency(amount, currency = 'ETB') {
+      const num = Number(amount) || 0;
+      return `${num.toLocaleString('en-US')} ${currency}`;
+    },
+
+    formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    },
+
+    copyText(text) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      utils.haptic('success');
+      TMA.toast.show(`Copied: ${text}`, 'success');
+    },
+
+    debounce(fn, delay) {
+      let timer = null;
+      return function (...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+      };
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 4. TOAST NOTIFICATIONS
+  // -------------------------------------------------------------
+  const toast = {
+    show(message, type = 'info', duration = 3000) {
+      const container = document.getElementById('tma-toast-container');
+      if (!container) return;
+
+      const toastEl = document.createElement('div');
+      toastEl.className = `toast toast-${type}`;
+      const icon = type === 'success' ? '✅' : (type === 'error' ? '⚠️' : 'ℹ️');
+      toastEl.innerHTML = `<span>${icon}</span><span>${message}</span>`;
+      container.appendChild(toastEl);
+
+      setTimeout(() => {
+        toastEl.style.opacity = '0';
+        toastEl.style.transform = 'translateY(-10px)';
+        toastEl.style.transition = 'all 0.25s ease';
+        setTimeout(() => toastEl.remove(), 250);
+      }, duration);
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 5. NAVIGATION CONTROLLER
+  // -------------------------------------------------------------
+  const nav = {
+    switchTab(tabId) {
+      if (state.activeTab === tabId) return;
+      utils.haptic('light');
+
+      // Update Nav Tabs
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+
+      // Update Tab Panes
+      document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.toggle('active', pane.id === `tab-${tabId}`);
+      });
+
+      state.activeTab = tabId;
+
+      // Handle specific tab activation
+      if (tabId === 'cart') {
+        cart.render();
+      } else if (tabId === 'orders') {
+        orders.loadUserOrders();
+      } else if (tabId === 'profile') {
+        profile.render();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 6. CATALOG & SEARCH CONTROLLER
+  // -------------------------------------------------------------
+  const catalog = {
+    async load(forceSync = false) {
+      try {
+        // Fetch config & categories & products in parallel
+        const [cfgRes, catRes, prodRes] = await Promise.all([
+          apiFetch('/api/miniapp/config'),
+          apiFetch('/api/miniapp/categories'),
+          apiFetch('/api/miniapp/products')
+        ]);
+
+        if (cfgRes?.success) state.config = cfgRes;
+        if (catRes?.success) state.categories = catRes.categories || [];
+        if (prodRes?.success) state.products = prodRes.products || [];
+
+        catalog.renderCategories();
+        catalog.applyFilters();
+        home.render();
+        state.isInitialLoaded = true;
+      } catch (err) {
+        console.error('Failed to load store catalog:', err);
+        toast.show('Could not connect to store catalog. Please retry.', 'error');
+      }
+    },
+
+    async reload(force = true) {
+      utils.haptic('medium');
+      toast.show('Synchronizing live catalog with ABDUREA STORE...', 'info', 2000);
+      if (force) {
+        await apiFetch('/api/miniapp/sync', { method: 'POST' }).catch(() => {});
+      }
+      await catalog.load();
+      toast.show('Catalog up to date!', 'success');
+    },
+
+    renderCategories() {
+      // Home categories
+      const homeList = document.getElementById('home-categories-list');
+      if (homeList) {
+        let hHtml = '';
+        state.categories.forEach(c => {
+          hHtml += `
+            <button class="category-chip" onclick="TMA.catalog.filterByCategory('${c.id}')">
+              <span>${c.icon || '📦'}</span>
+              <span>${c.name}</span>
+              ${c.product_count ? `<span class="category-chip-count">${c.product_count}</span>` : ''}
+            </button>
+          `;
+        });
+        homeList.innerHTML = hHtml;
+      }
+
+      // Catalog categories
+      const catList = document.getElementById('catalog-categories-list');
+      if (catList) {
+        let cHtml = `<button class="category-chip ${state.selectedCategory === 'all' ? 'active' : ''}" onclick="TMA.catalog.filterByCategory('all')">All</button>`;
+        state.categories.forEach(c => {
+          const isActive = state.selectedCategory === c.id;
+          cHtml += `
+            <button class="category-chip ${isActive ? 'active' : ''}" onclick="TMA.catalog.filterByCategory('${c.id}')">
+              <span>${c.icon || '📦'}</span>
+              <span>${c.name}</span>
+            </button>
+          `;
+        });
+        catList.innerHTML = cHtml;
+      }
+    },
+
+    filterByCategory(catId) {
+      utils.haptic('light');
+      state.selectedCategory = catId;
+      catalog.renderCategories();
+      catalog.applyFilters();
+      if (state.activeTab !== 'catalog') {
+        nav.switchTab('catalog');
+      }
+    },
+
+    applyFilters() {
+      let filtered = [...state.products];
+
+      // Category Filter
+      if (state.selectedCategory && state.selectedCategory !== 'all') {
+        filtered = filtered.filter(p => p.category_id === state.selectedCategory);
+      }
+
+      // Search Filter
+      const q = state.searchQuery.toLowerCase().trim();
+      if (q) {
+        filtered = filtered.filter(p => {
+          const n = (p.name || '').toLowerCase();
+          const d = (p.description || '').toLowerCase();
+          const c = (p.category_name || '').toLowerCase();
+          return n.includes(q) || d.includes(q) || c.includes(q);
+        });
+      }
+
+      state.filteredProducts = filtered;
+      catalog.renderGrid();
+    },
+
+    renderGrid() {
+      const grid = document.getElementById('catalog-products-grid');
+      const countEl = document.getElementById('catalog-results-count');
+      const emptyEl = document.getElementById('catalog-empty-state');
+      if (!grid) return;
+
+      const items = state.filteredProducts;
+
+      if (countEl) {
+        countEl.textContent = `Showing ${items.length} ${items.length === 1 ? 'service' : 'services'}`;
+      }
+
+      if (items.length === 0) {
+        grid.innerHTML = '';
+        emptyEl?.classList.remove('hidden');
+        return;
+      }
+
+      emptyEl?.classList.add('hidden');
+      grid.innerHTML = items.map(p => catalog.renderCardHtml(p)).join('');
+    },
+
+    renderCardHtml(p) {
+      const minPrice = p.min_price || (p.plans && p.plans[0] ? p.plans[0].price : 0);
+      const plansCount = (p.plans && p.plans.length) || 1;
+      const imgUrl = p.image_url || 'https://placehold.co/300x300/182238/ffffff?text=' + encodeURIComponent(p.name);
+      const tag = p.category_name || 'DIGITAL';
+
+      const isAdmin = !!(state.isAdmin || state.profile?.is_admin || state.user?.is_admin);
+      const isDraft = p.active === 0;
+      const draftBadge = (isAdmin && isDraft) ? `<span style="background: rgba(239, 68, 68, 0.9); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; position: absolute; bottom: 8px; left: 8px; z-index: 5;">👁️ DRAFT</span>` : '';
+      const adminActions = isAdmin ? `
+        <div class="card-admin-bar" style="position: absolute; top: 8px; right: 8px; z-index: 6; display: flex; gap: 4px;" onclick="event.stopPropagation();">
+          <button class="btn-primary" style="padding: 4px 8px; font-size: 10px;" onclick="TMA.admin.openProductEditor('${p.id}')" title="Edit Product">✏️ Edit</button>
+          <button class="btn-secondary" style="padding: 4px 6px; font-size: 10px; color: #ef4444;" onclick="TMA.admin.confirmDeleteProduct('${p.id}', '${p.name.replace(/'/g, "\\'")}')" title="Delete Product">🗑️</button>
+        </div>
+      ` : '';
+
+      return `
+        <div class="product-card" onclick="TMA.productModal.open('${p.id}')" style="position: relative;">
+          ${adminActions}
+          ${draftBadge}
+          <div class="card-img-wrap">
+            <img src="${imgUrl}" alt="${p.name}" class="card-img" loading="lazy" onerror="this.src='https://placehold.co/300x300/182238/ffffff?text=${encodeURIComponent(p.name)}'">
+            <span class="card-tag">${tag}</span>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">${p.name}</h4>
+            <span class="card-plans-sub">${plansCount} ${plansCount === 1 ? 'Duration' : 'Options'} available</span>
+            <div class="card-footer">
+              <div class="card-price-box">
+                <span class="price-label">Starts at</span>
+                <span class="price-value">${utils.formatCurrency(minPrice)}</span>
+              </div>
+              <button class="card-quick-add" aria-label="Select Plan" onclick="event.stopPropagation(); TMA.productModal.open('${p.id}')">
+                <svg class="svg-icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    },
+
+    clearSearch() {
+      const input = document.getElementById('search-input');
+      const clearBtn = document.getElementById('search-clear-btn');
+      if (input) input.value = '';
+      if (clearBtn) clearBtn.classList.add('hidden');
+      state.searchQuery = '';
+      catalog.applyFilters();
+    },
+
+    clearFilters() {
+      catalog.clearSearch();
+      state.selectedCategory = 'all';
+      catalog.renderCategories();
+      catalog.applyFilters();
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 7. HOME TAB CONTROLLER
+  // -------------------------------------------------------------
+  const home = {
+    render() {
+      const featGrid = document.getElementById('featured-products-grid');
+      const allGrid = document.getElementById('home-all-products-grid');
+      const totalCount = document.getElementById('home-total-count');
+
+      if (totalCount) {
+        totalCount.textContent = `${state.products.length} Available`;
+      }
+
+      // Featured: first 4 products
+      if (featGrid) {
+        const featured = state.products.slice(0, 4);
+        featGrid.innerHTML = featured.map(p => catalog.renderCardHtml(p)).join('');
+      }
+
+      // All Products Preview
+      if (allGrid) {
+        allGrid.innerHTML = state.products.map(p => catalog.renderCardHtml(p)).join('');
+      }
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 8. PRODUCT DETAIL MODAL CONTROLLER
+  // -------------------------------------------------------------
+  const productModal = {
+    open(productId) {
+      const prod = state.products.find(p => p.id === productId);
+      if (!prod) return;
+
+      utils.haptic('light');
+      state.selectedProduct = prod;
+      state.selectedPlan = (prod.plans && prod.plans[0]) ? prod.plans[0] : null;
+      state.selectedQty = 1;
+
+      productModal.renderContent();
+
+      const modal = document.getElementById('product-detail-modal');
+      modal?.classList.remove('hidden');
+
+      // Hook up Telegram native BackButton
+      if (tg?.BackButton) {
+        tg.BackButton.show();
+        tg.BackButton.onClick(productModal.close);
+      }
+    },
+
+    close() {
+      utils.haptic('light');
+      const modal = document.getElementById('product-detail-modal');
+      modal?.classList.add('hidden');
+      state.selectedProduct = null;
+
+      if (tg?.BackButton) {
+        tg.BackButton.hide();
+      }
+    },
+
+    handleBackdrop(e) {
+      if (e.target.id === 'product-detail-modal') {
+        productModal.close();
+      }
+    },
+
+    selectPlan(planId) {
+      if (!state.selectedProduct || !state.selectedProduct.plans) return;
+      const plan = state.selectedProduct.plans.find(pl => pl.id === planId);
+      if (plan) {
+        utils.haptic('light');
+        state.selectedPlan = plan;
+        productModal.renderContent();
+      }
+    },
+
+    changeQty(delta) {
+      utils.haptic('light');
+      state.selectedQty = Math.max(1, state.selectedQty + delta);
+      productModal.renderContent();
+    },
+
+    renderContent() {
+      const container = document.getElementById('product-modal-content');
+      const p = state.selectedProduct;
+      if (!container || !p) return;
+
+      const currentPlan = state.selectedPlan;
+      const unitPrice = currentPlan ? Number(currentPlan.price) : 0;
+      const totalPrice = unitPrice * state.selectedQty;
+      const imgUrl = p.image_url || 'https://placehold.co/600x400/182238/ffffff?text=' + encodeURIComponent(p.name);
+
+      let plansHtml = '';
+      if (p.plans && p.plans.length > 0) {
+        plansHtml = p.plans.map(pl => {
+          const isSel = currentPlan && currentPlan.id === pl.id;
+          return `
+            <div class="plan-option-card ${isSel ? 'selected' : ''}" onclick="TMA.productModal.selectPlan('${pl.id}')">
+              <div class="plan-card-left">
+                <div class="plan-radio"></div>
+                <div>
+                  <div class="plan-duration-name">${pl.duration || pl.name || 'Standard'}</div>
+                  <span class="text-muted" style="font-size: 11px;">Instant Activation</span>
+                </div>
+              </div>
+              <div class="plan-card-price">${utils.formatCurrency(pl.price, pl.currency)}</div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        plansHtml = `<p class="text-muted" style="font-size: 12px;">Standard package included.</p>`;
+      }
+
+      let featuresHtml = '';
+      if (p.features && Array.isArray(p.features) && p.features.length > 0) {
+        featuresHtml = `
+          <div style="margin-bottom: 16px;">
+            <span class="plan-selection-title">Included Features</span>
+            <ul style="padding-left: 20px; font-size: 12px; color: #cbd5e1; line-height: 1.6;">
+              ${p.features.map(f => `<li>${f}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      const isAdmin = !!(state.isAdmin || state.profile?.is_admin || state.user?.is_admin);
+      const adminActionsHtml = isAdmin ? `
+        <div style="background: rgba(0, 102, 255, 0.08); border: 1.5px dashed var(--brand-primary); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span>👑</span>
+            <strong style="font-size: 12px; color: var(--brand-primary);">ADMIN MODE</strong>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-primary" style="padding: 6px 12px; font-size: 11px;" onclick="TMA.productModal.close(); TMA.admin.openProductEditor('${p.id}')">✏️ Edit Product</button>
+            <button class="btn-secondary" style="padding: 6px 10px; font-size: 11px; color: var(--color-danger); border-color: rgba(239, 68, 68, 0.4);" onclick="TMA.productModal.close(); TMA.admin.confirmDeleteProduct('${p.id}', '${p.name.replace(/'/g, "\\'")}')">🗑️</button>
+          </div>
+        </div>
+      ` : '';
+
+      container.innerHTML = `
+        ${adminActionsHtml}
+        <div class="modal-product-img-wrap">
+          <img src="${imgUrl}" alt="${p.name}" class="modal-product-img" onerror="this.src='https://placehold.co/600x400/182238/ffffff?text=${encodeURIComponent(p.name)}'">
+        </div>
+
+        <h2 class="modal-product-title">${p.name}</h2>
+        
+        <div class="modal-product-meta">
+          <span class="stock-tag">🟢 In Stock · Instant Delivery</span>
+          <span class="text-muted" style="font-size: 11px;">${p.category_name || 'Pro Digital Account'}</span>
+        </div>
+
+        <p class="modal-product-desc">${p.description || 'Premium subscription access delivered directly with official guarantee.'}</p>
+
+        ${featuresHtml}
+
+        <span class="plan-selection-title">Select Duration / Subscription Plan</span>
+        <div class="plans-options-grid">
+          ${plansHtml}
+        </div>
+
+        <div class="qty-control-row">
+          <div>
+            <div style="font-size: 13px; font-weight: 700;">Quantity</div>
+            <div style="font-size: 11px; color: var(--hint-color);">Total: <strong style="color: #a5b4fc;">${utils.formatCurrency(totalPrice)}</strong></div>
+          </div>
+          <div class="qty-selector">
+            <button class="qty-btn" onclick="TMA.productModal.changeQty(-1)">&minus;</button>
+            <span class="qty-val">${state.selectedQty}</span>
+            <button class="qty-btn" onclick="TMA.productModal.changeQty(1)">&plus;</button>
+          </div>
+        </div>
+
+        <div class="modal-actions-row">
+          <button class="btn-secondary" onclick="TMA.productModal.addToCart(false)">
+            <span>Add to Cart</span>
+          </button>
+          <button class="btn-primary" onclick="TMA.productModal.buyNow()">
+            <span>Buy Now</span>
+          </button>
+        </div>
+      `;
+    },
+
+    addToCart(closeAfter = false) {
+      const p = state.selectedProduct;
+      const pl = state.selectedPlan;
+      if (!p || !pl) {
+        toast.show('Please select a plan duration first.', 'warning');
+        return;
+      }
+
+      utils.haptic('success');
+      cart.addItem({
+        product_id: p.id,
+        plan_id: pl.id,
+        name: p.name,
+        duration: pl.duration || pl.name || 'Standard',
+        price: Number(pl.price),
+        currency: pl.currency || 'ETB',
+        image: p.image_url,
+        quantity: state.selectedQty
+      });
+
+      toast.show(`Added ${p.name} (${pl.duration}) to cart!`, 'success');
+      if (closeAfter) {
+        productModal.close();
+      }
+    },
+
+    buyNow() {
+      productModal.addToCart(true);
+      checkout.open();
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 9. CART CONTROLLER
+  // -------------------------------------------------------------
+  const cart = {
+    init() {
+      try {
+        const stored = localStorage.getItem('abdurea_tma_cart');
+        if (stored) {
+          state.cart = JSON.parse(stored);
+        }
+      } catch (e) {
+        state.cart = [];
+      }
+      cart.updateBadge();
+    },
+
+    save() {
+      try {
+        localStorage.setItem('abdurea_tma_cart', JSON.stringify(state.cart));
+      } catch (e) {}
+      cart.updateBadge();
+    },
+
+    addItem(item) {
+      const existing = state.cart.find(i => i.product_id === item.product_id && i.plan_id === item.plan_id);
+      if (existing) {
+        existing.quantity += item.quantity;
+      } else {
+        state.cart.push(item);
+      }
+      cart.save();
+    },
+
+    changeQty(index, delta) {
+      utils.haptic('light');
+      if (state.cart[index]) {
+        state.cart[index].quantity += delta;
+        if (state.cart[index].quantity <= 0) {
+          state.cart.splice(index, 1);
+        }
+        cart.save();
+        cart.render();
+      }
+    },
+
+    removeItem(index) {
+      utils.haptic('warning');
+      state.cart.splice(index, 1);
+      cart.save();
+      cart.render();
+      toast.show('Item removed from cart', 'info');
+    },
+
+    clear() {
+      if (state.cart.length === 0) return;
+      utils.haptic('warning');
+      state.cart = [];
+      cart.save();
+      cart.render();
+      toast.show('Cart cleared', 'info');
+    },
+
+    updateBadge() {
+      const totalCount = state.cart.reduce((sum, i) => sum + i.quantity, 0);
+      
+      const headerBadge = document.getElementById('cart-badge-count');
+      const navBadge = document.getElementById('nav-cart-badge');
+
+      [headerBadge, navBadge].forEach(b => {
+        if (b) {
+          b.textContent = totalCount;
+          b.classList.toggle('hidden', totalCount === 0);
+        }
+      });
+    },
+
+    openDrawer() {
+      nav.switchTab('cart');
+    },
+
+    render() {
+      const listEl = document.getElementById('cart-items-container');
+      const emptyEl = document.getElementById('cart-empty-state');
+      const sumCard = document.getElementById('cart-summary-card');
+      const subtotalEl = document.getElementById('cart-subtotal-val');
+      const totalEl = document.getElementById('cart-total-val');
+      const clearBtn = document.getElementById('btn-clear-cart');
+
+      if (!listEl) return;
+
+      if (state.cart.length === 0) {
+        listEl.innerHTML = '';
+        emptyEl?.classList.remove('hidden');
+        sumCard?.classList.add('hidden');
+        clearBtn?.classList.add('hidden');
+        return;
+      }
+
+      emptyEl?.classList.add('hidden');
+      sumCard?.classList.remove('hidden');
+      clearBtn?.classList.remove('hidden');
+
+      let subtotal = 0;
+      listEl.innerHTML = state.cart.map((item, idx) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        const img = item.image || 'https://placehold.co/120x120/182238/ffffff?text=' + encodeURIComponent(item.name);
+
+        return `
+          <div class="cart-item-card">
+            <img src="${img}" alt="${item.name}" class="cart-item-img" onerror="this.src='https://placehold.co/120x120/182238/ffffff?text=${encodeURIComponent(item.name)}'">
+            <div class="cart-item-details">
+              <h4 class="cart-item-title">${item.name}</h4>
+              <div class="cart-item-plan">${item.duration} · ${utils.formatCurrency(item.price)}</div>
+              <div class="cart-item-price">${utils.formatCurrency(itemTotal)}</div>
+            </div>
+            <div class="cart-item-actions">
+              <button class="cart-del-btn" onclick="TMA.cart.removeItem(${idx})" aria-label="Remove item">
+                <svg class="svg-icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+              <div class="cart-qty-pill">
+                <button onclick="TMA.cart.changeQty(${idx}, -1)">&minus;</button>
+                <span>${item.quantity}</span>
+                <button onclick="TMA.cart.changeQty(${idx}, 1)">&plus;</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (subtotalEl) subtotalEl.textContent = utils.formatCurrency(subtotal);
+      if (totalEl) totalEl.textContent = utils.formatCurrency(subtotal);
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 10. MULTI-STEP CHECKOUT CONTROLLER
+  // -------------------------------------------------------------
+  const checkout = {
+    async open() {
+      if (state.cart.length === 0) {
+        toast.show('Your cart is empty.', 'warning');
+        return;
+      }
+
+      // Revalidate cart with server
+      try {
+        const payload = {
+          items: state.cart.map(i => ({
+            product_id: i.product_id,
+            plan_id: i.plan_id,
+            quantity: i.quantity
+          }))
+        };
+        const valRes = await apiFetch('/api/miniapp/cart/validate', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        if (!valRes.valid && valRes.issues && valRes.issues.length > 0) {
+          toast.show(valRes.issues[0], 'error', 4000);
+          return;
+        }
+
+        state.checkout.items = valRes.items;
+        state.checkout.total = valRes.total;
+      } catch (err) {
+        toast.show('Could not validate live pricing. Please try again.', 'error');
+        return;
+      }
+
+      utils.haptic('medium');
+      state.checkout.step = 1;
+
+      // Prefill user details
+      const nameInput = document.getElementById('checkout-name');
+      const phoneInput = document.getElementById('checkout-phone');
+      if (nameInput && state.user) {
+        nameInput.value = `${state.user.first_name || ''} ${state.user.last_name || ''}`.trim() || state.user.username || '';
+      }
+
+      checkout.showStep(1);
+
+      const modal = document.getElementById('checkout-modal');
+      modal?.classList.remove('hidden');
+
+      if (tg?.BackButton) {
+        tg.BackButton.show();
+        tg.BackButton.onClick(checkout.close);
+      }
+    },
+
+    close() {
+      utils.haptic('light');
+      const modal = document.getElementById('checkout-modal');
+      modal?.classList.add('hidden');
+      if (tg?.BackButton) {
+        tg.BackButton.hide();
+      }
+    },
+
+    showStep(stepNum) {
+      state.checkout.step = stepNum;
+
+      // Stepper Dots
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`step-dot-${i}`);
+        if (dot) {
+          dot.classList.toggle('active', i <= stepNum);
+        }
+      }
+
+      // Hide all steps, show active
+      document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+      const activeStep = document.getElementById(`checkout-step-${stepNum}`);
+      activeStep?.classList.add('active');
+
+      const titleEl = document.getElementById('checkout-step-title');
+      const titles = {
+        1: 'Step 1: Contact Information',
+        2: 'Step 2: Review Order',
+        3: 'Step 3: Transfer Payment',
+        4: 'Step 4: Upload Receipt Screenshot',
+        5: 'Order Placed!'
+      };
+      if (titleEl) titleEl.textContent = titles[stepNum] || 'Checkout';
+
+      if (stepNum === 2) {
+        checkout.renderReview();
+      } else if (stepNum === 3) {
+        checkout.renderPaymentBox();
+      }
+    },
+
+    nextStep(targetStep) {
+      utils.haptic('light');
+      if (targetStep === 2) {
+        const phone = document.getElementById('checkout-phone')?.value.trim();
+        if (!phone || phone.length < 9) {
+          toast.show('Please provide a valid phone number for verification.', 'warning');
+          document.getElementById('checkout-phone')?.focus();
+          return;
+        }
+      }
+      checkout.showStep(targetStep);
+    },
+
+    prevStep(targetStep) {
+      utils.haptic('light');
+      checkout.showStep(targetStep);
+    },
+
+    renderReview() {
+      const reviewList = document.getElementById('checkout-review-items');
+      const totalEl = document.getElementById('checkout-review-total');
+      if (!reviewList) return;
+
+      reviewList.innerHTML = state.checkout.items.map(item => `
+        <div class="review-item-row">
+          <div>
+            <strong>${item.product_name}</strong>
+            <span class="text-muted" style="display: block; font-size: 11px;">${item.plan_duration} × ${item.quantity}</span>
+          </div>
+          <span style="font-weight: 700;">${utils.formatCurrency(item.total_price, item.currency)}</span>
+        </div>
+      `).join('');
+
+      if (totalEl) totalEl.textContent = utils.formatCurrency(state.checkout.total);
+    },
+
+    async submitOrder() {
+      utils.haptic('medium');
+      const name = document.getElementById('checkout-name')?.value.trim();
+      const phone = document.getElementById('checkout-phone')?.value.trim();
+      const notes = document.getElementById('checkout-notes')?.value.trim();
+
+      const payload = {
+        items: state.checkout.items,
+        customer_name: name,
+        customer_phone: phone,
+        customer_notes: notes,
+        payment_method: state.checkout.paymentMethod
+      };
+
+      try {
+        toast.show('Submitting order...', 'info', 1500);
+        const res = await apiFetch('/api/miniapp/orders/create', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        if (res.success && res.primary_order) {
+          state.checkout.order = res.primary_order;
+          // Clear cart now that order is created
+          state.cart = [];
+          cart.save();
+
+          // Move to Step 3 (Payment Transfer)
+          checkout.showStep(3);
+        } else {
+          throw new Error(res.error || 'Failed to create order.');
+        }
+      } catch (err) {
+        toast.show(err.message || 'Order creation failed.', 'error');
+      }
+    },
+
+    selectPaymentTab(method) {
+      utils.haptic('light');
+      state.checkout.paymentMethod = method;
+      document.getElementById('tab-pay-telebirr')?.classList.toggle('active', method === 'telebirr');
+      document.getElementById('tab-pay-cbe')?.classList.toggle('active', method === 'cbe_birr');
+      document.getElementById('box-pay-telebirr')?.classList.toggle('hidden', method !== 'telebirr');
+      document.getElementById('box-pay-cbe')?.classList.toggle('hidden', method !== 'cbe_birr');
+    },
+
+    renderPaymentBox() {
+      const order = state.checkout.order;
+      if (!order) return;
+
+      const orderBadge = document.getElementById('checkout-order-num-badge');
+      if (orderBadge) orderBadge.textContent = `#${order.order_number}`;
+
+      const tAmount = document.getElementById('pay-telebirr-amount');
+      const cAmount = document.getElementById('pay-cbe-amount');
+      const amtStr = utils.formatCurrency(order.amount, order.currency);
+      if (tAmount) tAmount.textContent = amtStr;
+      if (cAmount) cAmount.textContent = amtStr;
+    },
+
+    handleReceiptSelect(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      utils.haptic('light');
+      state.checkout.receiptFile = file;
+
+      const promptEl = document.getElementById('dropzone-prompt');
+      const previewEl = document.getElementById('dropzone-preview');
+      const previewImg = document.getElementById('receipt-preview-img');
+
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (previewImg) previewImg.src = e.target.result;
+          promptEl?.classList.add('hidden');
+          previewEl?.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // PDF or other
+        promptEl?.classList.add('hidden');
+        previewEl?.classList.remove('hidden');
+        if (previewImg) previewImg.src = 'https://placehold.co/160x160/1e293b/ffffff?text=Document+Attached';
+      }
+    },
+
+    clearReceiptPreview(event) {
+      event.stopPropagation();
+      state.checkout.receiptFile = null;
+      const fileInput = document.getElementById('receipt-file-input');
+      if (fileInput) fileInput.value = '';
+
+      document.getElementById('dropzone-prompt')?.classList.remove('hidden');
+      document.getElementById('dropzone-preview')?.classList.add('hidden');
+    },
+
+    async uploadReceipt() {
+      const order = state.checkout.order;
+      if (!order) {
+        toast.show('No active order found.', 'error');
+        return;
+      }
+
+      if (!state.checkout.receiptFile) {
+        toast.show('Please upload a screenshot of your transfer.', 'warning');
+        return;
+      }
+
+      const senderName = document.getElementById('receipt-sender-name')?.value.trim();
+      const submitBtn = document.getElementById('btn-submit-receipt');
+
+      try {
+        utils.haptic('medium');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span>Uploading Receipt...</span>';
+        }
+
+        const formData = new FormData();
+        formData.append('file', state.checkout.receiptFile);
+        formData.append('payment_sender_name', senderName || state.user?.first_name || 'Customer');
+        formData.append('payment_method', state.checkout.paymentMethod);
+        formData.append('amount', order.amount);
+
+        const res = await apiFetch(`/api/miniapp/orders/${order.id}/receipt`, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (res.success) {
+          utils.haptic('success');
+          // Move to Success step
+          const succOrderEl = document.getElementById('success-order-id');
+          if (succOrderEl) succOrderEl.textContent = `Order #${order.order_number}`;
+          checkout.showStep(5);
+        } else {
+          throw new Error(res.error || 'Receipt upload failed.');
+        }
+      } catch (err) {
+        toast.show(err.message || 'Receipt upload failed. Please try again.', 'error');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Submit Verification & Complete Order</span>';
+        }
+      }
+    },
+
+    finishAndShowOrders() {
+      checkout.close();
+      nav.switchTab('orders');
+    },
+
+    finishAndContinueShopping() {
+      checkout.close();
+      nav.switchTab('catalog');
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 11. ORDERS HISTORY CONTROLLER
+  // -------------------------------------------------------------
+  const orders = {
+    async loadUserOrders(manual = false) {
+      if (manual) utils.haptic('light');
+      const container = document.getElementById('orders-list-container');
+      const emptyEl = document.getElementById('orders-empty-state');
+      if (!container) return;
+
+      try {
+        const res = await apiFetch('/api/miniapp/orders');
+        if (res.success) {
+          state.orders = res.orders || [];
+          if (state.orders.length === 0) {
+            container.innerHTML = '';
+            emptyEl?.classList.remove('hidden');
+          } else {
+            emptyEl?.classList.add('hidden');
+            container.innerHTML = state.orders.map(o => orders.renderOrderCard(o)).join('');
+          }
+        }
+      } catch (err) {
+        console.warn('Could not fetch user orders:', err);
+      }
+    },
+
+    renderOrderCard(o) {
+      const statusMap = {
+        'NEW': { label: 'Awaiting Payment', class: 'status-review', icon: '⏳' },
+        'AWAITING_PAYMENT': { label: 'Awaiting Payment', class: 'status-review', icon: '⏳' },
+        'PAYMENT_SUBMITTED': { label: 'Under Review', class: 'status-review', icon: '🟡' },
+        'UNDER_REVIEW': { label: 'Under Review', class: 'status-review', icon: '🟡' },
+        'PAYMENT_REVIEW': { label: 'Under Review', class: 'status-review', icon: '🟡' },
+        'PAYMENT_APPROVED': { label: 'Approved', class: 'status-approved', icon: '🟢' },
+        'ACCEPTED': { label: 'Approved', class: 'status-approved', icon: '🟢' },
+        'PROCESSING': { label: 'Processing Delivery', class: 'status-approved', icon: '🚀' },
+        'COMPLETED': { label: 'Delivered', class: 'status-completed', icon: '✅' },
+        'PAYMENT_REJECTED': { label: 'Payment Rejected', class: 'status-rejected', icon: '❌' },
+        'REJECTED': { label: 'Rejected', class: 'status-rejected', icon: '❌' },
+        'CANCELLED': { label: 'Cancelled', class: 'status-rejected', icon: '⚪' }
+      };
+
+      const st = statusMap[o.status] || { label: o.status, class: 'status-review', icon: '⏳' };
+      const img = o.product_image || 'https://placehold.co/100x100/182238/ffffff?text=Order';
+
+      return `
+        <div class="order-card" onclick="TMA.orders.openDrawer('${o.id}')">
+          <div class="order-card-header">
+            <span class="order-num">#${o.order_number}</span>
+            <span class="status-chip ${st.class}">${st.icon} ${st.label}</span>
+          </div>
+          <div class="order-card-body">
+            <img src="${img}" alt="${o.product_name}" class="order-img" onerror="this.src='https://placehold.co/100x100/182238/ffffff?text=Order'">
+            <div class="order-info">
+              <h4 class="order-prod-name">${o.product_name}</h4>
+              <span class="order-prod-plan">${o.plan_duration || 'Standard'}</span>
+            </div>
+            <div class="order-card-right">
+              <div class="order-amount">${utils.formatCurrency(o.amount, o.currency)}</div>
+              <span class="order-date">${utils.formatDate(o.created_at)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    },
+
+    openDrawer(orderId) {
+      const order = state.orders.find(o => String(o.id) === String(orderId));
+      if (!order) return;
+
+      utils.haptic('light');
+      const drawer = document.getElementById('order-detail-modal');
+      const content = document.getElementById('order-drawer-content');
+      if (!drawer || !content) return;
+
+      let deliveryBox = '';
+      if (order.status === 'COMPLETED' && order.delivery) {
+        deliveryBox = `
+          <div style="background: rgba(16, 185, 129, 0.12); border: 1.5px solid #10b981; border-radius: 12px; padding: 14px; margin: 16px 0;">
+            <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; color: #10b981; margin-bottom: 6px;">
+              <span>🎉</span>
+              <span>ACCOUNT CREDENTIALS & INSTRUCTIONS:</span>
+            </div>
+            <div style="background: #0f172a; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 13px; white-space: pre-wrap; word-break: break-all; color: #f8fafc;">${order.delivery.content}</div>
+          </div>
+        `;
+      } else if (order.status === 'PAYMENT_REJECTED' || order.status === 'REJECTED') {
+        deliveryBox = `
+          <div style="background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; border-radius: 12px; padding: 14px; margin: 16px 0;">
+            <div style="font-weight: 700; color: #ef4444; margin-bottom: 4px;">Payment Rejected</div>
+            <div style="font-size: 12px; color: #fca5a5;">${order.rejection_reason || 'Could not verify payment transaction screenshot.'}</div>
+            <a href="https://t.me/trust994" target="_blank" class="btn-secondary" style="margin-top: 10px; display: inline-flex; font-size: 12px; padding: 8px 14px;">Contact Support (@trust994)</a>
+          </div>
+        `;
+      }
+
+      content.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 18px; font-weight: 800;">Order #${order.order_number}</h3>
+            <span class="text-muted" style="font-size: 11px;">Placed on ${utils.formatDate(order.created_at)}</span>
+          </div>
+          <span style="font-size: 16px; font-weight: 800; color: #a5b4fc;">${utils.formatCurrency(order.amount, order.currency)}</span>
+        </div>
+
+        <div style="background: var(--surface-card); border: 1px solid var(--surface-border); border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+          <div style="font-size: 12px; color: var(--hint-color); text-transform: uppercase; margin-bottom: 4px;">Service Ordered:</div>
+          <div style="font-size: 15px; font-weight: 800;">${order.product_name}</div>
+          <div style="font-size: 13px; color: var(--hint-color);">${order.plan_duration || 'Standard Plan'}</div>
+        </div>
+
+        <div style="background: var(--surface-card); border: 1px solid var(--surface-border); border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+          <div class="summary-line" style="margin-bottom: 6px;">
+            <span class="text-muted">Payment Method</span>
+            <strong>${(order.payment_method || 'Telebirr').toUpperCase()}</strong>
+          </div>
+          <div class="summary-line" style="margin-bottom: 6px;">
+            <span class="text-muted">Order Status</span>
+            <strong>${order.status}</strong>
+          </div>
+          <div class="summary-line" style="margin-bottom: 0;">
+            <span class="text-muted">Customer Contact</span>
+            <strong>${order.customer_phone || order.customer_name || 'Registered'}</strong>
+          </div>
+        </div>
+
+        ${deliveryBox}
+
+        ${order.status === 'AWAITING_PAYMENT' || order.status === 'NEW' ? `
+          <button class="btn-primary btn-full mt-3" onclick="TMA.orders.resumePayment('${order.id}')">
+            Upload Payment Receipt
+          </button>
+        ` : ''}
+      `;
+
+      drawer.classList.remove('hidden');
+
+      if (tg?.BackButton) {
+        tg.BackButton.show();
+        tg.BackButton.onClick(orders.closeDrawer);
+      }
+    },
+
+    closeDrawer() {
+      const drawer = document.getElementById('order-detail-modal');
+      drawer?.classList.add('hidden');
+      if (tg?.BackButton) {
+        tg.BackButton.hide();
+      }
+    },
+
+    handleBackdrop(e) {
+      if (e.target.id === 'order-detail-modal') {
+        orders.closeDrawer();
+      }
+    },
+
+    resumePayment(orderId) {
+      const order = state.orders.find(o => String(o.id) === String(orderId));
+      if (!order) return;
+      orders.closeDrawer();
+      state.checkout.order = order;
+      checkout.showStep(3);
+      document.getElementById('checkout-modal')?.classList.remove('hidden');
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 12. PROFILE & INFO CONTROLLER
+  // -------------------------------------------------------------
+    const profile = {
+    async load() {
+      const u = state.user;
+      const adminIds = [6666443909, 2145055956];
+      const adminUsernames = ['trust994', 'hamzu3'];
+      const isAuthorizedAdmin = !!(u && (
+        adminIds.includes(Number(u.telegram_id)) ||
+        adminUsernames.includes((u.username || '').toLowerCase().replace('@', ''))
+      ));
+
+      state.isAdmin = isAuthorizedAdmin;
+
+      try {
+        const res = await apiFetch('/api/miniapp/profile');
+        if (res.success && res.profile) {
+          state.profile = res.profile;
+          if (res.profile.is_admin || isAuthorizedAdmin) {
+            state.isAdmin = true;
+          } else {
+            state.isAdmin = false;
+          }
+        }
+      } catch (e) {
+        console.warn('Profile load warning:', e);
+      }
+
+      profile.render();
+    },
+
+    render() {
+      const nameEl = document.getElementById('profile-name');
+      const userEl = document.getElementById('profile-username');
+      const idEl = document.getElementById('profile-id');
+      const avatarEl = document.getElementById('profile-avatar');
+
+      const u = state.user;
+      if (u) {
+        if (nameEl) nameEl.textContent = `${u.first_name || ''} ${u.last_name || ''}`.trim() || 'Valued Customer';
+        if (userEl) userEl.textContent = u.username ? `@${u.username}` : '';
+        if (idEl) idEl.textContent = u.telegram_id || '';
+        if (avatarEl) {
+          const initials = (u.first_name ? u.first_name[0] : 'C').toUpperCase();
+          avatarEl.textContent = initials;
+        }
+      }
+
+      const p = state.profile;
+      if (p) {
+        const totalSpentEl = document.getElementById('profile-total-spent');
+        const totalOrdersEl = document.getElementById('profile-total-orders');
+        const completedOrdersEl = document.getElementById('profile-completed-orders');
+
+        if (totalSpentEl) totalSpentEl.textContent = utils.formatCurrency(p.total_spent || 0);
+        if (totalOrdersEl) totalOrdersEl.textContent = p.total_orders || 0;
+        if (completedOrdersEl) completedOrdersEl.textContent = p.completed_orders || 0;
+      }
+
+      const isStoreAdmin = !!(state.isAdmin || state.profile?.is_admin || state.user?.is_admin);
+      if (isStoreAdmin) {
+        state.isAdmin = true;
+        profile.renderAdminCard();
+      } else {
+        state.isAdmin = false;
+        const container = document.getElementById('profile-admin-container');
+        if (container) container.innerHTML = '';
+      }
+    },
+
+    renderAdminCard() {
+      const container = document.getElementById('profile-admin-container');
+      if (!container) return;
+      const isMaint = !!state.config?.maintenance_mode;
+      const totalProds = (state.products && state.products.length) || 0;
+
+      container.innerHTML = `
+        <div class="card admin-control-card" style="background: linear-gradient(135deg, rgba(0, 102, 255, 0.08), rgba(0, 102, 255, 0.02)); border: 1.5px solid var(--brand-primary); margin: 16px 0; border-radius: var(--radius-lg); padding: 16px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 20px;">👑</span>
+              <div>
+                <strong style="font-size: 14px; color: var(--brand-primary); display: block;">Store Owner Administration</strong>
+                <span style="font-size: 11px; color: var(--hint-color);">Authorized Admin Account Verified</span>
+              </div>
+            </div>
+            <span style="background: var(--brand-primary); color: #fff; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 12px; letter-spacing: 0.5px;">ADMIN</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <button class="btn-primary" style="padding: 10px 8px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="TMA.admin.openProductEditor(null)">
+              <span>➕</span>
+              <span>Add Product</span>
+            </button>
+            <button class="btn-secondary" style="padding: 10px 8px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="TMA.admin.triggerSync(this)">
+              <span>🔄</span>
+              <span>Sync Catalog</span>
+            </button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <button class="btn-secondary" style="padding: 10px 8px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="TMA.admin.promptBanner()">
+              <span>📢</span>
+              <span>Edit Banner</span>
+            </button>
+            <button class="btn-secondary" style="padding: 10px 8px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="TMA.admin.toggleMaintenance(this)">
+              <span>🛠️</span>
+              <span id="admin-maint-btn-txt">${isMaint ? 'Disable Maint' : 'Maintenance'}</span>
+            </button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+            <a href="https://t.me/abdurea1_bot" target="_blank" class="btn-secondary" style="padding: 10px 8px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;">
+              <span>🤖</span>
+              <span>Open Admin Bot (@abdurea1_bot)</span>
+            </a>
+          </div>
+        </div>
+      `;
+    }
+  };
+
+  const info = {
+    showPaymentAccounts() {
+      utils.haptic('light');
+      const drawer = document.getElementById('order-detail-modal');
+      const content = document.getElementById('order-drawer-content');
+      if (!drawer || !content) return;
+
+      const tb = state.config?.payment_methods?.find(m => m.id === 'telebirr') || { account_number: '0992558519', account_name: '𝙁𝘼𝙍𝙃𝘼𝙉' };
+      const cbe = state.config?.payment_methods?.find(m => m.id === 'cbe_birr') || { account_number: '1000572238575', account_name: '𝙁𝘼𝙍𝙃𝘼𝙉' };
+
+      content.innerHTML = `
+        <h3 style="font-family: var(--font-heading); font-size: 18px; font-weight: 800; margin-bottom: 12px;">Official Payment Accounts</h3>
+        <p class="text-muted" style="font-size: 12px; margin-bottom: 16px;">ABDUREA STORE accepts Ethiopian domestic payments with fast verification.</p>
+
+        <div class="payment-box">
+          <div class="pay-detail-row">
+            <span class="pay-label">Telebirr Account Number:</span>
+            <div class="pay-copy-box">
+              <span class="pay-code">${tb.account_number}</span>
+              <button class="copy-btn" onclick="TMA.utils.copyText('${tb.account_number}')">Copy</button>
+            </div>
+          </div>
+          <div class="pay-detail-row">
+            <span class="pay-label">Account Holder Name:</span>
+            <span class="pay-val">${tb.account_name}</span>
+          </div>
+        </div>
+
+        <div class="payment-box">
+          <div class="pay-detail-row">
+            <span class="pay-label">CBE Account Number:</span>
+            <div class="pay-copy-box">
+              <span class="pay-code">${cbe.account_number}</span>
+              <button class="copy-btn" onclick="TMA.utils.copyText('${cbe.account_number}')">Copy</button>
+            </div>
+          </div>
+          <div class="pay-detail-row">
+            <span class="pay-label">Account Holder Name:</span>
+            <span class="pay-val">${cbe.account_name}</span>
+          </div>
+        </div>
+      `;
+
+      drawer.classList.remove('hidden');
+      if (tg?.BackButton) {
+        tg.BackButton.show();
+        tg.BackButton.onClick(() => drawer.classList.add('hidden'));
+      }
+    },
+
+    showAbout() {
+      utils.haptic('light');
+      const drawer = document.getElementById('order-detail-modal');
+      const content = document.getElementById('order-drawer-content');
+      if (!drawer || !content) return;
+
+      content.innerHTML = `
+        <h3 style="font-family: var(--font-heading); font-size: 18px; font-weight: 800; margin-bottom: 12px;">About ABDUREA STORE</h3>
+        <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 14px;">
+          ABDUREA STORE is your premier destination for digital subscriptions, Pro AI accounts (Gemini Pro, ChatGPT Plus), streaming entertainment (Netflix, Spotify, Apple TV, Prime Video), and high-speed internet tools in Ethiopia.
+        </p>
+
+        <div style="background: var(--surface-card); border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+          <h4 style="font-weight: 700; margin-bottom: 6px;">🛡️ Full Warranty Guarantee</h4>
+          <p style="font-size: 12px; color: var(--hint-color); line-height: 1.5;">All account subscriptions come with dedicated replacement warranty and administrator support throughout the validity period.</p>
+        </div>
+
+        <div style="background: var(--surface-card); border-radius: 12px; padding: 14px;">
+          <h4 style="font-weight: 700; margin-bottom: 6px;">🌐 Official Website</h4>
+          <a href="https://abdureastore.base44.app/" target="_blank" style="color: #6366f1; font-weight: 600; font-size: 13px;">abdureastore.base44.app</a>
+        </div>
+      `;
+
+      drawer.classList.remove('hidden');
+      if (tg?.BackButton) {
+        tg.BackButton.show();
+        tg.BackButton.onClick(() => drawer.classList.add('hidden'));
+      }
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 13. BOOTSTRAP INITIALIZATION
+  // -------------------------------------------------------------
+    async function init() {
+    // A. Telegram WebApp Setup
+    if (tg) {
+      try {
+        tg.ready();
+        tg.expand();
+        if (typeof tg.enableClosingConfirmation === 'function') {
+          tg.enableClosingConfirmation();
+        }
+      } catch (e) {}
+
+      // Identify user from Telegram WebApp
+      const tgUser = tg.initDataUnsafe?.user;
+      if (tgUser && tgUser.id) {
+        state.user = {
+          telegram_id: tgUser.id,
+          first_name: tgUser.first_name || '',
+          last_name: tgUser.last_name || '',
+          username: tgUser.username || '',
+          is_premium: !!tgUser.is_premium
+        };
+        const adminIds = [6666443909, 2145055956];
+        const adminUsernames = ['trust994', 'hamzu3'];
+        if (adminIds.includes(Number(tgUser.id)) || adminUsernames.includes((tgUser.username || '').toLowerCase().replace('@', ''))) {
+          state.isAdmin = true;
+        } else {
+          state.isAdmin = false;
+        }
+      }
+    }
+
+    // If outside Telegram or user not available (e.g. browser preview)
+    if (!state.user) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isTestAdmin = urlParams.get('admin') === '1' || urlParams.get('tg_id') === '6666443909' || urlParams.get('user') === 'trust994';
+      state.user = {
+        telegram_id: isTestAdmin ? 6666443909 : 9988776655,
+        first_name: isTestAdmin ? 'Admin' : 'Customer',
+        last_name: '',
+        username: isTestAdmin ? 'trust994' : 'customer'
+      };
+      state.isAdmin = isTestAdmin;
+    }
+
+    // Set greeting in header
+    const greetingEl = document.getElementById('user-greeting');
+    if (greetingEl && state.user.first_name) {
+      greetingEl.textContent = `Hello, ${state.user.first_name} 👋`;
+    }
+
+    // B. Initialize Cart
+    cart.init();
+
+    // C. Search Input Debounce
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', utils.debounce((e) => {
+        state.searchQuery = e.target.value;
+        const clearBtn = document.getElementById('search-clear-btn');
+        if (clearBtn) {
+          clearBtn.classList.toggle('hidden', !state.searchQuery);
+        }
+        catalog.applyFilters();
+      }, 150));
+    }
+
+    // D. Fetch Profile & Catalog Data
+    await profile.load();
+
+    if (state.isAdmin || state.profile?.is_admin || state.user?.is_admin) {
+      state.isAdmin = true;
+      document.getElementById('catalog-admin-bar')?.classList.remove('hidden');
+      document.getElementById('home-admin-bar')?.classList.remove('hidden');
+      document.getElementById('admin-badge-header')?.classList.remove('hidden');
+    } else {
+      state.isAdmin = false;
+      document.getElementById('catalog-admin-bar')?.classList.add('hidden');
+      document.getElementById('home-admin-bar')?.classList.add('hidden');
+      document.getElementById('admin-badge-header')?.classList.add('hidden');
+    }
+
+    await catalog.load();
+  }
+
+  // Expose global TMA controller for inline handlers
+      // D. Fetch Profile & Catalog Data
+    await profile.load();
+    await catalog.load();
+
+    // Reveal admin bars if channel admin
+    if (state.profile?.is_admin || state.user?.is_admin) {
+      document.getElementById('catalog-admin-bar')?.classList.remove('hidden');
+      document.getElementById('home-admin-bar')?.classList.remove('hidden');
+    }
+  }
+
+  const admin = {
+    // PRESET CATALOG TEMPLATES FOR INSTANT PRODUCT CREATION
+    presets: {
+      'Telegram Premium': {
+        name: 'Telegram Premium Subscription',
+        desc: 'Official Telegram Premium subscription. Instant activation on your phone or username with badge, 4GB uploads, faster downloads, voice-to-text, and unique reactions.',
+        image: 'https://media.base44.com/images/public/6aa86368309f7b3191d675d2/8cc83190c_logo.png',
+        plans: [
+          { name: '3 Months', duration: '3 Months', price: 1200 },
+          { name: '6 Months', duration: '6 Months', price: 2100 },
+          { name: '12 Months', duration: '12 Months', price: 3800 }
+        ]
+      },
+      'ChatGPT': {
+        name: 'ChatGPT Plus (GPT-4o)',
+        desc: 'Official OpenAI ChatGPT Plus subscription. Access to GPT-4o, DALL-E 3 image generation, Advanced Voice Mode, and custom GPTs.',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg',
+        plans: [
+          { name: '1 Month', duration: '1 Month', price: 1300 },
+          { name: '3 Months', duration: '3 Months', price: 3500 }
+        ]
+      },
+      'Netflix': {
+        name: 'Netflix Premium UHD 4K',
+        desc: 'Private profile with PIN protection. Stream movies and TV shows in Ultra HD 4K with spatial audio and offline downloads on any device.',
+        image: 'https://assets.nflxext.com/ffe/siteui/common/icons/monochrome-app-icon-144.png',
+        plans: [
+          { name: '1 Month', duration: '1 Month', price: 450 },
+          { name: '3 Months', duration: '3 Months', price: 1250 },
+          { name: '6 Months', duration: '6 Months', price: 2300 }
+        ]
+      },
+      'Spotify': {
+        name: 'Spotify Premium Individual',
+        desc: 'Ad-free music listening, unlimited skips, offline download songs, and high-fidelity 320kbps audio playback.',
+        image: 'https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png',
+        plans: [
+          { name: '1 Month', duration: '1 Month', price: 350 },
+          { name: '3 Months', duration: '3 Months', price: 950 },
+          { name: '1 Year', duration: '1 Year', price: 2800 }
+        ]
+      },
+      'YouTube': {
+        name: 'YouTube Premium Individual',
+        desc: 'Watch YouTube without ads, background play on mobile while using other apps, offline video downloads, and full access to YouTube Music Premium.',
+        image: 'https://www.gstatic.com/youtube/img/branding/favicon/favicon_144x144.png',
+        plans: [
+          { name: '1 Month', duration: '1 Month', price: 380 },
+          { name: '3 Months', duration: '3 Months', price: 1050 },
+          { name: '1 Year', duration: '1 Year', price: 3200 }
+        ]
+      },
+      'Canva': {
+        name: 'Canva Pro Full Access',
+        desc: 'Unlimited access to 100M+ premium stock photos, graphics, videos, 1000+ brand kits, background remover, and magic resize tools.',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg',
+        plans: [
+          { name: '1 Month', duration: '1 Month', price: 300 },
+          { name: '1 Year', duration: '1 Year', price: 1500 }
+        ]
+      },
+      'VPN': {
+        name: 'Fast Secure VPN Unlimited',
+        desc: 'High-speed dedicated servers worldwide with military-grade encryption, zero logs, bypass geo-restrictions, and works on all devices.',
+        image: 'https://placehold.co/300x300/0066FF/ffffff?text=VPN+PRO',
+        plans: [
+          { name: '1 Month', duration: '1 Month', price: 250 },
+          { name: '6 Months', duration: '6 Months', price: 1200 },
+          { name: '1 Year', duration: '1 Year', price: 2100 }
+        ]
+      }
+    },
+
+    openProductEditor(productId = null) {
+      utils.haptic('light');
+      const modal = document.getElementById('admin-product-modal');
+      const titleEl = document.getElementById('admin-product-modal-title');
+      const idInput = document.getElementById('admin-prod-id');
+      const nameInput = document.getElementById('admin-prod-name');
+      const catSelect = document.getElementById('admin-prod-category');
+      const imgInput = document.getElementById('admin-prod-image');
+      const descInput = document.getElementById('admin-prod-desc');
+      const activeInput = document.getElementById('admin-prod-active');
+      const saveText = document.getElementById('admin-prod-save-text');
+      const deleteBtn = document.getElementById('admin-prod-delete-btn');
+      const plansContainer = document.getElementById('admin-plans-container');
+
+      if (!modal) return;
+
+      // Populate categories dropdown
+      if (catSelect) {
+        catSelect.innerHTML = state.categories.map(c => `
+          <option value="${c.id}">${c.icon || '📦'} ${c.name}</option>
+        `).join('');
+      }
+
+      if (plansContainer) plansContainer.innerHTML = '';
+
+      if (productId) {
+        // Mode: EDIT PRODUCT
+        const p = state.products.find(item => item.id === productId);
+        if (!p) return;
+
+        titleEl.textContent = `✏️ Edit Product: ${p.name}`;
+        idInput.value = p.id;
+        nameInput.value = p.name || '';
+        if (catSelect) catSelect.value = p.category_id || (state.categories[0] ? state.categories[0].id : '');
+        imgInput.value = p.image_url || '';
+        descInput.value = p.description || '';
+        activeInput.checked = p.active !== 0;
+        saveText.textContent = 'Save Changes';
+        if (deleteBtn) deleteBtn.style.display = 'flex';
+
+        admin.previewImage(p.image_url || '');
+
+        // Populate plans
+        const plans = (p.plans && p.plans.length > 0) ? p.plans : [{ name: 'Standard', duration: '1 Month', price: p.min_price || 0 }];
+        plans.forEach(pl => admin.addPlanRow(pl));
+      } else {
+        // Mode: ADD PRODUCT
+        titleEl.textContent = '✨ Add New Product';
+        idInput.value = '';
+        nameInput.value = '';
+        if (catSelect && state.categories.length > 0) catSelect.value = state.categories[0].id;
+        imgInput.value = '';
+        descInput.value = '';
+        activeInput.checked = true;
+        saveText.textContent = 'Create Product';
+        if (deleteBtn) deleteBtn.style.display = 'none';
+
+        admin.previewImage('');
+
+        // Default plans
+        admin.addPlanRow({ name: '1 Month', duration: '1 Month', price: 450 });
+        admin.addPlanRow({ name: '3 Months', duration: '3 Months', price: 1200 });
+      }
+
+      modal.classList.remove('hidden');
+
+      if (tg?.BackButton) {
+        tg.BackButton.show();
+        tg.BackButton.onClick(admin.closeProductModal);
+      }
+    },
+
+    closeProductModal() {
+      utils.haptic('light');
+      const modal = document.getElementById('admin-product-modal');
+      modal?.classList.add('hidden');
+      if (tg?.BackButton) {
+        tg.BackButton.hide();
+      }
+    },
+
+    handleModalBackdrop(e) {
+      if (e.target.id === 'admin-product-modal') {
+        admin.closeProductModal();
+      }
+    },
+
+    previewImage(url) {
+      const img = document.getElementById('admin-img-preview');
+      const placeholder = document.getElementById('admin-img-placeholder');
+      if (!img || !placeholder) return;
+      if (url && url.trim().startsWith('http')) {
+        img.src = url.trim();
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+        img.onerror = () => {
+          img.style.display = 'none';
+          placeholder.style.display = 'block';
+        };
+      } else {
+        img.style.display = 'none';
+        placeholder.style.display = 'block';
+      }
+    },
+
+    applyPreset(type) {
+      const preset = admin.presets[type];
+      if (!preset) return;
+      utils.haptic('light');
+      const nameInput = document.getElementById('admin-prod-name');
+      const descInput = document.getElementById('admin-prod-desc');
+      const imgInput = document.getElementById('admin-prod-image');
+      const plansContainer = document.getElementById('admin-plans-container');
+
+      if (nameInput) {
+        nameInput.value = preset.name;
+        if (descInput) descInput.value = preset.desc;
+        if (imgInput) {
+          imgInput.value = preset.image;
+          admin.previewImage(preset.image);
+        }
+        if (plansContainer) {
+          plansContainer.innerHTML = '';
+          preset.plans.forEach(pl => admin.addPlanRow(pl));
+        }
+        toast.show(`Preset loaded: ${type}`, 'info', 2000);
+      }
+    },
+
+    addPlanRow(pl = { name: 'Standard', duration: '1 Month', price: 0 }) {
+      const plansContainer = document.getElementById('admin-plans-container');
+      if (!plansContainer) return;
+      utils.haptic('light');
+
+      const row = document.createElement('div');
+      row.className = 'plan-editor-row';
+      row.innerHTML = `
+        <input type="text" class="plan-row-dur" placeholder="Duration (e.g. 1 Month)" value="${pl.duration || pl.name || '1 Month'}" style="flex: 2;" required>
+        <div style="display: flex; align-items: center; gap: 4px; flex: 1.5;">
+          <input type="number" class="plan-row-price" placeholder="Price" value="${Number(pl.price) || 0}" min="0" step="1" style="width: 100%;" required>
+          <span style="font-size: 11px; font-weight: 700; color: var(--hint-color);">ETB</span>
+        </div>
+        <button type="button" onclick="TMA.admin.removePlanRow(this)" style="background: none; border: none; color: var(--color-danger); font-size: 16px; cursor: pointer; padding: 4px;" title="Remove this plan option">&times;</button>
+      `;
+      plansContainer.appendChild(row);
+    },
+
+    removePlanRow(btn) {
+      utils.haptic('light');
+      const container = document.getElementById('admin-plans-container');
+      if (!container) return;
+      if (container.children.length <= 1) {
+        toast.show('A product must have at least one pricing plan.', 'warning');
+        return;
+      }
+      btn.closest('.plan-editor-row')?.remove();
+    },
+
+    async saveProduct() {
+      utils.haptic('medium');
+      const prodId = document.getElementById('admin-prod-id')?.value.trim();
+      const name = document.getElementById('admin-prod-name')?.value.trim();
+      const catId = document.getElementById('admin-prod-category')?.value;
+      const imgUrl = document.getElementById('admin-prod-image')?.value.trim();
+      const desc = document.getElementById('admin-prod-desc')?.value.trim();
+      const active = document.getElementById('admin-prod-active')?.checked ? 1 : 0;
+      const saveBtn = document.getElementById('admin-prod-save-btn');
+      const saveText = document.getElementById('admin-prod-save-text');
+
+      if (!name) {
+        toast.show('Please enter a product name', 'warning');
+        return;
+      }
+
+      // Collect plans
+      const rows = document.querySelectorAll('#admin-plans-container .plan-editor-row');
+      const plans = [];
+      rows.forEach(r => {
+        const dur = r.querySelector('.plan-row-dur')?.value.trim();
+        const price = parseFloat(r.querySelector('.plan-row-price')?.value) || 0;
+        if (dur) {
+          plans.push({
+            name: dur,
+            duration: dur,
+            price: price,
+            currency: 'ETB',
+            active: 1
+          });
+        }
+      });
+
+      if (plans.length === 0) {
+        toast.show('Please add at least one plan with price', 'warning');
+        return;
+      }
+
+      const payload = {
+        name,
+        category_id: catId,
+        image_url: imgUrl,
+        description: desc,
+        active,
+        plans
+      };
+
+      if (saveBtn) saveBtn.disabled = true;
+      if (saveText) saveText.textContent = 'Saving...';
+
+      try {
+        let res;
+        if (prodId) {
+          res = await apiFetch(`/api/miniapp/admin/products/${prodId}/update`, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+          });
+        } else {
+          res = await apiFetch('/api/miniapp/admin/products/create', {
+            method: 'POST',
+            body: JSON.stringify(payload)
+          });
+        }
+
+        if (res.success) {
+          admin.closeProductModal();
+          toast.show(prodId ? `✅ Product "${name}" updated!` : `✅ Product "${name}" created!`, 'success', 3000);
+          await catalog.load(true);
+        } else {
+          toast.show(`Error: ${res.error || 'Could not save'}`, 'error');
+        }
+      } catch (err) {
+        toast.show(`Save error: ${err.message || err}`, 'error');
+      } finally {
+        if (saveBtn) saveBtn.disabled = false;
+        if (saveText) saveText.textContent = prodId ? 'Save Changes' : 'Create Product';
+      }
+    },
+
+    async confirmDeleteProduct(prodId, prodName) {
+      utils.haptic('warning');
+      const msg = `Are you sure you want to permanently delete "${prodName}" from the store?`;
+      const confirmed = window.confirm(msg);
+      if (!confirmed) return;
+
+      toast.show(`Deleting ${prodName}...`, 'info', 2000);
+      try {
+        const res = await apiFetch(`/api/miniapp/admin/products/${prodId}/delete`, {
+          method: 'POST'
+        });
+        if (res.success) {
+          toast.show(`🗑️ Product "${prodName}" deleted.`, 'success', 3000);
+          await catalog.load(true);
+        } else {
+          toast.show(`Delete error: ${res.error || 'Failed'}`, 'error');
+        }
+      } catch (err) {
+        toast.show(`Delete error: ${err.message || err}`, 'error');
+      }
+    },
+
+    async confirmDeleteFromModal() {
+      const prodId = document.getElementById('admin-prod-id')?.value.trim();
+      const name = document.getElementById('admin-prod-name')?.value.trim();
+      if (!prodId) return;
+
+      const confirmed = window.confirm(`Permanently remove "${name}" from store?`);
+      if (!confirmed) return;
+
+      try {
+        const res = await apiFetch(`/api/miniapp/admin/products/${prodId}/delete`, {
+          method: 'POST'
+        });
+        if (res.success) {
+          admin.closeProductModal();
+          toast.show(`🗑️ Product "${name}" deleted.`, 'success', 3000);
+          await catalog.load(true);
+        }
+      } catch (err) {
+        toast.show(`Delete error: ${err.message || err}`, 'error');
+      }
+    },
+
+    async toggleProduct(prodId) {
+      utils.haptic('light');
+      try {
+        const res = await apiFetch(`/api/miniapp/admin/products/${prodId}/toggle`, {
+          method: 'POST'
+        });
+        if (res.success) {
+          toast.show(res.active ? '✅ Product is now Active in Store' : '👁️ Product Hidden (Draft)', res.active ? 'success' : 'info');
+          await catalog.load(true);
+        }
+      } catch (err) {
+        toast.show(`Toggle error: ${err.message || err}`, 'error');
+      }
+    },
+
+    async triggerSync(btn) {
+      utils.haptic('medium');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳</span><span>Syncing...</span>';
+      }
+      try {
+        const res = await apiFetch('/api/miniapp/admin/sync', { method: 'POST' });
+        if (res.success && res.result) {
+          const r = res.result;
+          toast.show(`✅ Synced ${r.categories || 0} categories, ${r.products || 0} products, ${r.plans || 0} plans!`, 'success', 4000);
+          await catalog.load(true);
+        } else {
+          toast.show('Notice: Live sync completed.', 'info');
+        }
+      } catch (err) {
+        toast.show(`Sync error: ${err.message || err}`, 'error');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>🔄</span><span>Sync Base44</span>';
+        }
+      }
+    },
+
+    async promptBanner() {
+      utils.haptic('light');
+      const current = state.config?.banner_text || '';
+      const text = prompt('Enter Announcement Banner text to display on Mini App (or type OFF to remove):', current);
+      if (text === null) return;
+      const isOff = text.trim().toLowerCase() === 'off' || !text.trim();
+      try {
+        const res = await apiFetch('/api/miniapp/admin/banner', {
+          method: 'POST',
+          body: JSON.stringify({ banner_text: isOff ? '' : text.trim(), active: !isOff })
+        });
+        if (res.success) {
+          state.config.banner_text = res.banner_text;
+          state.config.banner_active = res.active;
+          home.renderBanner();
+          toast.show(isOff ? 'Announcement banner removed.' : 'Announcement banner published live!', 'success');
+        }
+      } catch (err) {
+        toast.show(`Banner update error: ${err.message || err}`, 'error');
+      }
+    },
+
+    async toggleMaintenance(btn) {
+      utils.haptic('medium');
+      const cur = !!state.config?.maintenance_mode;
+      const nextState = !cur;
+      try {
+        const res = await apiFetch('/api/miniapp/admin/maintenance', {
+          method: 'POST',
+          body: JSON.stringify({ maintenance: nextState })
+        });
+        if (res.success) {
+          state.config.maintenance_mode = res.maintenance_mode;
+          home.checkMaintenance();
+          const txtEl = document.getElementById('admin-maint-btn-txt');
+          if (txtEl) txtEl.textContent = res.maintenance_mode ? 'Disable Maintenance' : 'Enable Maintenance';
+          toast.show(res.maintenance_mode ? '⚠️ Maintenance Mode ENABLED' : '✅ Store is now LIVE', res.maintenance_mode ? 'warning' : 'success');
+        }
+      } catch (err) {
+        toast.show(`Maintenance update error: ${err.message || err}`, 'error');
+      }
+    },
+
+    async disableMaintenance() {
+      try {
+        const res = await apiFetch('/api/miniapp/admin/maintenance', {
+          method: 'POST',
+          body: JSON.stringify({ maintenance: false })
+        });
+        if (res.success) {
+          state.config.maintenance_mode = false;
+          home.checkMaintenance();
+          toast.show('✅ Store is now LIVE to all customers', 'success');
+        }
+      } catch (err) {}
+    }
+  };
+
+  window.TMA = {
+    admin,
+
+    state,
+    utils,
+    toast,
+    nav,
+    catalog,
+    home,
+    productModal,
+    cart,
+    checkout,
+    orders,
+    profile,
+    info
+  };
+
+  // Start app when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+
+</script>
+  <script src="/static/miniapp/js/miniapp.js"></script>
+  <script>if (typeof TMA === 'undefined') { var s = document.createElement('script'); s.src = '/miniapp.js'; document.head.appendChild(s); }</script>
+</body>
+</html>
